@@ -18,26 +18,34 @@ import frc.robot.RobotMap;
 import frc.robot.commands.TankDrive;
 
 
-public class Drivetrain extends Subsystem {
+public class DriveSubsystem extends Subsystem {
 
     WPI_TalonSRX fr, fl, br, bl;
+    SpeedControllerGroup left, right;
     DifferentialDrive drive;
 
-    public Drivetrain() {
+    public DriveSubsystem() {
         fr = new WPI_TalonSRX(RobotMap.frontRight.get());
         fl = new WPI_TalonSRX(RobotMap.frontLeft.get());
         br = new WPI_TalonSRX(RobotMap.backRight.get());
         bl = new WPI_TalonSRX(RobotMap.backLeft.get());
-        drive = new DifferentialDrive(new SpeedControllerGroup(fl,bl), new SpeedControllerGroup(fr, br));
+
+        left = new SpeedControllerGroup(fl, bl);
+        right = new SpeedControllerGroup(fr, br);
+
+        left.setInverted(true);
+        right.setInverted(true);
+
+        drive = new DifferentialDrive(left, right);
     }
 
     public void tankDrive() {
-        drive.tankDrive(-Robot.m_oi.getLeft().getY(), -Robot.m_oi.getRight().getY());
+        drive.tankDrive(Robot.m_oi.getLeft().getY(), Robot.m_oi.getRight().getY());
     }
 
-    public void setMotors(double r, double l) {
-        fr.set(ControlMode.PercentOutput, r);
-        fl.set(ControlMode.PercentOutput, l);
+    public void setMotors(double left, double right) {
+        fl.set(left);
+        fr.set(right);
     }
 
     @Override

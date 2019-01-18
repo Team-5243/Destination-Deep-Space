@@ -9,11 +9,11 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.DriveSubsystem;
 
 public class TankDrive extends Command {
 
-  Drivetrain driveSubsystem;
+  DriveSubsystem driveSubsystem;
 
   public TankDrive() {
     // Use requires() here to declare subsystem dependencies

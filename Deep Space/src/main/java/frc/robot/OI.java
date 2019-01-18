@@ -9,7 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.RaiseRobot;
+import frc.robot.commands.RaiseLift;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -18,17 +18,19 @@ import frc.robot.commands.RaiseRobot;
 public class OI {
 
     private Joystick left, right;
-    private JoystickButton tallButton, shortButton;
+    private JoystickButton b_intake, b_outtake, b_raise, b_lower;
 
     public OI() {
         left = new Joystick(0);
         right = new Joystick(1);
-        tallButton = new JoystickButton(left, 4);
-        shortButton = new JoystickButton(left, 5);
+        b_intake = new JoystickButton(left, 3);
+        b_outtake = new JoystickButton(left, 4);
+        b_raise = new JoystickButton(left, 5);
+        b_lower = new JoystickButton(left, 6);
 
         //WARNING --- The RaiseRobot command has no min/max limit set
-        tallButton.whileHeld(new RaiseRobot(true)); 
-        shortButton.whileHeld(new RaiseRobot(false));
+        b_raise.whileHeld(new RaiseLift(true)); 
+        b_lower.whileHeld(new RaiseLift(false));
     }
 
     public Joystick getLeft() {

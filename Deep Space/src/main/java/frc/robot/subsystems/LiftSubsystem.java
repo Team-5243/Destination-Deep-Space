@@ -16,37 +16,36 @@ import frc.robot.RobotMap;
 /**
  * Add your docs here.
  */
-public class RaiseSubsystem extends Subsystem {
+public class LiftSubsystem extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  WPI_TalonSRX leftRaise, rightRaise;
+  WPI_TalonSRX leftLift, rightLift;
 
+  public LiftSubsystem() {
+    leftLift = new WPI_TalonSRX(RobotMap.leftLift.get());
+    rightLift = new WPI_TalonSRX(RobotMap.rightLift.get());
+
+    leftLift.follow(rightLift);
+  }
+
+  public void elongate(boolean taller) {
+    if(taller) {
+      rightLift.set(.5d);
+    }
+    else {
+      rightLift.set(-.5d);
+    }
+  }
+
+  public void stopMotors() {
+    rightLift.set(ControlMode.PercentOutput, 0);
+  }
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-  }
-
-  public RaiseSubsystem() {
-    leftRaise = new WPI_TalonSRX(RobotMap.leftRaise.get());
-    rightRaise = new WPI_TalonSRX(RobotMap.rightRaise.get());
-
-    leftRaise.follow(rightRaise);
-  }
-
-  public void elongate(boolean taller) {
-    if(taller) {
-      rightRaise.set(ControlMode.PercentOutput, .5d);
-    }
-    else {
-      rightRaise.set(ControlMode.PercentOutput, -.5d);
-    }
-  }
-
-  public void stopMotors() {
-    rightRaise.set(ControlMode.PercentOutput, 0);
   }
 
 }

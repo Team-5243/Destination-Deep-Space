@@ -7,35 +7,33 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.Robot;
-import frc.robot.commands.RunFlywheels;
 
-public class Flywheels extends Subsystem {
+public class TridentSubsystem extends Subsystem {
 
-    private WPI_TalonSRX left, right;
+    private WPI_TalonSRX leftFlywheels, rightFlywheels;
 
-    public Flywheels() {
-        left = new WPI_TalonSRX(4);
-        right = new WPI_TalonSRX(1);
-        right.setInverted(true);
-        right.follow(left);
+    public TridentSubsystem() {
+        leftFlywheels = new WPI_TalonSRX(4);
+        rightFlywheels = new WPI_TalonSRX(1);
+        rightFlywheels.setInverted(true);
+        rightFlywheels.follow(leftFlywheels);
     }
 
-    public void runFlywheels() {
-        if (Robot.m_oi.getRight().getRawButton(3))
-            left.set(ControlMode.PercentOutput, .5d);
-        else if (Robot.m_oi.getRight().getRawButton(4))
-            left.set(ControlMode.PercentOutput, -.5d);
-        else 
-            left.set(0);
+    public void setFlywheels(boolean intake) {
+        if(intake){
+            leftFlywheels.set(.5d);
+        } else {
+            leftFlywheels.set(-.5d);
+        }       
+    }
+
+    public void stopFlywheels(){
+        leftFlywheels.set(0);
     }
 
     @Override
     public void initDefaultCommand() {
-        setDefaultCommand(new RunFlywheels());
     }
 }

@@ -9,15 +9,15 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.RaiseSubsystem;
+import frc.robot.subsystems.LiftSubsystem;
 
-public class RaiseRobot extends Command {
-  private RaiseSubsystem raise;
+public class RaiseLift extends Command {
+  private LiftSubsystem raise;
   private boolean taller;
-  public RaiseRobot(boolean up) {
+  public RaiseLift(boolean up) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    raise = Robot.m_raise;
+    raise = Robot.m_lift;
     taller = up;
     requires(raise);
   }
