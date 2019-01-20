@@ -7,7 +7,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -17,8 +16,8 @@ import frc.robot.RobotMap;
  * Add your docs here.
  */
 public class LiftSubsystem extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
+
+  //Includes Lift and Pivot
 
   WPI_TalonSRX leftLift, rightLift;
 
@@ -26,20 +25,20 @@ public class LiftSubsystem extends Subsystem {
     leftLift = new WPI_TalonSRX(RobotMap.leftLift.get());
     rightLift = new WPI_TalonSRX(RobotMap.rightLift.get());
 
-    leftLift.follow(rightLift);
+    rightLift.follow(leftLift);
   }
 
   public void elongate(boolean taller) {
     if(taller) {
-      rightLift.set(.5d);
+      leftLift.set(.5d);
     }
     else {
-      rightLift.set(-.5d);
+      leftLift.set(-.5d);
     }
   }
 
-  public void stopMotors() {
-    rightLift.set(ControlMode.PercentOutput, 0);
+  public void stopLift() {
+    leftLift.set(0);
   }
 
   @Override

@@ -9,17 +9,20 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.LiftSubsystem;
 
-public class TankDrive extends Command {
+public class RunLift extends Command {
 
-  DriveSubsystem driveSubsystem;
+  private LiftSubsystem raise;
+  private boolean taller;
 
-  public TankDrive() {
+  public RunLift(boolean up) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    driveSubsystem = Robot.m_drivetrain;
-    requires(driveSubsystem);
+    raise = Robot.m_lift;
+    requires(raise);
+
+    taller = up;
   }
 
   // Called just before this Command runs the first time
@@ -30,7 +33,7 @@ public class TankDrive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    driveSubsystem.tankDrive();
+    raise.elongate(taller);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -42,11 +45,13 @@ public class TankDrive extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    raise.stopLift();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    raise.stopLift();
   }
 }

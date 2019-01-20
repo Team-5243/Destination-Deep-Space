@@ -9,19 +9,24 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.RobotMap;
 
 public class TridentSubsystem extends Subsystem {
+
+    //Includes Cargo and Hatch Mechanisms
 
     private WPI_TalonSRX leftFlywheels, rightFlywheels;
 
     public TridentSubsystem() {
-        leftFlywheels = new WPI_TalonSRX(4);
-        rightFlywheels = new WPI_TalonSRX(1);
-        rightFlywheels.setInverted(true);
+        leftFlywheels = new WPI_TalonSRX(RobotMap.leftFlywheels.get());
+        rightFlywheels = new WPI_TalonSRX(RobotMap.rightFlywheels.get());
+
         rightFlywheels.follow(leftFlywheels);
+
+        rightFlywheels.setInverted(true);
     }
 
-    public void setFlywheels(boolean intake) {
+    public void spinyBois(boolean intake) {
         if(intake){
             leftFlywheels.set(.5d);
         } else {

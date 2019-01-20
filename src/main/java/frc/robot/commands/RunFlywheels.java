@@ -14,12 +14,13 @@ import frc.robot.subsystems.TridentSubsystem;
 public class RunFlywheels extends Command {
 
     private TridentSubsystem flywheels;
-    boolean intake;
+    private boolean intake;
 
     public RunFlywheels(boolean intake) {
         flywheels = Robot.m_trident;
-        this.intake = intake;
         requires(flywheels);
+
+        this.intake = intake;
     }
 
     // Called just before this Command runs the first time
@@ -30,7 +31,7 @@ public class RunFlywheels extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        flywheels.setFlywheels(intake);
+        flywheels.spinyBois(intake);
     }
 
     // Make this return true when this Command no longer needs to run execute()
