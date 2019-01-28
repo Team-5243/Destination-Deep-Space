@@ -14,11 +14,9 @@ package frc.robot;
  * floating around.
  */
 public enum RobotMap {
-	//TankDrive
-	frontRight(1), 
-	frontLeft(4),
-	backRight(2),
-	backLeft(3);
+	
+	leftFlywheels(3),
+	rightFlywheels(4);
 
 	private int port;
 	
