@@ -12,8 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.Flywheels;
-
+import frc.robot.subsystems.VisionSubsystem;;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,12 +22,8 @@ import frc.robot.subsystems.Flywheels;
  * project.
  */
 public class Robot extends TimedRobot {
-
-  public static OI m_oi;
-  public static Flywheels m_trident = new Flywheels();
-
-  Command m_autonomousCommand;
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
+  public static VisionSubsystem visionSubsystem = new VisionSubsystem();
+  public static OI oi;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -36,10 +31,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_oi = new OI();
+    oi = new OI();
     // chooser.addOption("My Auto", new MyAutoCommand());
-    SmartDashboard.putData("Auto mode", m_chooser);
-
   }
 
   /**
@@ -61,6 +54,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    //visionSubsystem.closePort();
+    //RobotMap.finishServer = true;
   }
 
   @Override
@@ -81,7 +76,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_chooser.getSelected();
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -91,9 +85,6 @@ public class Robot extends TimedRobot {
      */
 
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.start();
-    }
   }
 
   /**
@@ -110,9 +101,6 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
-    }
   }
 
   /**
