@@ -26,8 +26,8 @@ public class OI {
         right = new Joystick(1);
 
         //Placeholder
-        b_intake = new JoystickButton(left, 3);
-        b_outtake = new JoystickButton(left, 4);
+        b_intake = new JoystickButton(left, 4);
+        b_outtake = new JoystickButton(left, 3);
 
         b_raise = new JoystickButton(left, 5);
         b_lower = new JoystickButton(left, 6);

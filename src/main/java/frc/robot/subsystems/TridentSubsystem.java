@@ -23,15 +23,11 @@ public class TridentSubsystem extends Subsystem {
 
         rightFlywheels.follow(leftFlywheels);
 
-        rightFlywheels.setInverted(true);
+        leftFlywheels.setInverted(true);
     }
 
     public void spinyBois(boolean intake) {
-        if(intake){
-            leftFlywheels.set(.5d);
-        } else {
-            leftFlywheels.set(-.5d);
-        }       
+        leftFlywheels.set(intake ? -.5d : 1d);   
     }
 
     public void stopFlywheels(){
