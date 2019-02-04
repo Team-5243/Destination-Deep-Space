@@ -7,12 +7,17 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.VisionSubsystem;;
+import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -22,8 +27,15 @@ import frc.robot.subsystems.VisionSubsystem;;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static VisionSubsystem visionSubsystem = new VisionSubsystem();
-  public static OI oi;
+
+  public static OI m_oi;
+  public static DriveSubsystem m_drivetrain = new DriveSubsystem();
+  public static VisionSubsystem m_vision = new VisionSubsystem();
+
+  Command m_autonomousCommand;
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
+
+  NetworkTable table = m_vision.getTable();
 
   /**
    * This function is run when the robot is first started up and should be
@@ -31,9 +43,25 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    oi = new OI();
+    m_oi = new OI();
     // chooser.addOption("My Auto", new MyAutoCommand());
+    SmartDashboard.putData("Auto mode", m_chooser);
+
+    CameraServer.getInstance().startAutomaticCapture();
   }
+
+  public void updateSmartDashboard(){
+    //read values periodically
+    double x = m_vision.getX();
+    double y = m_vision.getY();
+    double area = m_vision.getArea();
+
+    //post to smart dashboard periodically
+    SmartDashboard.putNumber("LimelightX", x);
+    SmartDashboard.putNumber("LimelightY", y);
+    SmartDashboard.putNumber("LimelightArea", area);
+  }
+
 
   /**
    * This function is called every robot packet, no matter the mode. Use
@@ -45,6 +73,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    System.out.println("X value: " + m_vision.getX());
+    System.out.println("Y value: " + m_vision.getY());
+    System.out.println("Area value: " + m_vision.getArea());
   }
 
   /**
@@ -54,8 +85,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
-    //visionSubsystem.closePort();
-    //RobotMap.finishServer = true;
   }
 
   @Override
@@ -76,6 +105,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    m_autonomousCommand = m_chooser.getSelected();
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -83,8 +113,23 @@ public class Robot extends TimedRobot {
      * = new MyAutoCommand(); break; case "Default Auto": default:
      * autonomousCommand = new ExampleCommand(); break; }
      */
+      boolean aligned = false;
+      while(!aligned) {
+        if(m_vision.getX() <= -4) {
+          m_drivetrain.turnLeft();
+        }
+        else if(m_vision.getX() > 4)
+          m_drivetrain.turnRight();
+        else
+          aligned = true;  
+      }
+      m_drivetrain.stop();
+
 
     // schedule the autonomous command (example)
+    //if (m_autonomousCommand != null) {
+    //  m_autonomousCommand.start();
+    //}
   }
 
   /**
@@ -101,6 +146,9 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.cancel();
+    }
   }
 
   /**
