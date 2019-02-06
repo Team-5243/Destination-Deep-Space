@@ -24,9 +24,13 @@ public enum RobotMap {
 	leftFlywheels(5),
 	rightFlywheels(6),
 
+	//Pivot (placeholder)
+	leftPivot(7),
+	rightPivot(8),
+
 	//Lift (placeholder)
-	leftLift(7),
-	rightLift(8);
+	leftLift(9),
+	rightLift(10);
 
 	private int port;
 	

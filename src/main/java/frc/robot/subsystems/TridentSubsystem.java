@@ -15,15 +15,21 @@ public class TridentSubsystem extends Subsystem {
 
     //Includes Cargo and Hatch Mechanisms
 
-    private WPI_TalonSRX leftFlywheels, rightFlywheels;
+    private WPI_TalonSRX leftFlywheels, rightFlywheels, leftPivot, rightPivot;
 
     public TridentSubsystem() {
         leftFlywheels = new WPI_TalonSRX(RobotMap.leftFlywheels.get());
         rightFlywheels = new WPI_TalonSRX(RobotMap.rightFlywheels.get());
 
+        leftPivot = new WPI_TalonSRX(RobotMap.leftPivot.get());
+        rightPivot = new WPI_TalonSRX(RobotMap.rightPivot.get());
+
         rightFlywheels.follow(leftFlywheels);
+        rightPivot.follow(leftPivot);
 
         leftFlywheels.setInverted(true);
+
+
     }
 
     public void spinyBois(boolean intake) {
@@ -34,7 +40,23 @@ public class TridentSubsystem extends Subsystem {
         leftFlywheels.set(0);
     }
 
+    public void pivotDown(){
+        leftPivot.set(0.5); //rightPivot follows left so we only need to set left
+    }
+
+    public void pivotUp(){
+        leftPivot.set(-0.5); //rightPivot follows left so we only need to set left
+        //lowkey need to check again after we get to test with the real robot
+    }
+
+    public void stopPivots(){
+        leftPivot.set(0);
+    }
+    
     @Override
     public void initDefaultCommand() {
     }
+
+
+
 }
