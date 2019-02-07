@@ -10,6 +10,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.FlashBoi;
+import frc.robot.commands.RunCommandGroup;
+import frc.robot.commands.VisionAlignCommand;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -18,7 +20,7 @@ import frc.robot.commands.FlashBoi;
 public class OI {
 
     private Joystick left, right;
-    private JoystickButton blinky, bright, dead;
+    private JoystickButton blinky, bright, dead, auton;
 
     public OI() {
         left = new Joystick(0);
@@ -27,10 +29,12 @@ public class OI {
         blinky = new JoystickButton(right, 3);
         bright = new JoystickButton(right, 4);
         dead = new JoystickButton(right, 5);
+        auton = new JoystickButton(left, 6);
 
         blinky.whenPressed(new FlashBoi(2));
         bright.whenPressed(new FlashBoi(3));
         dead.whenPressed(new FlashBoi(1));
+        auton.whenPressed(new VisionAlignCommand());
     }
 
     public Joystick getLeft() {

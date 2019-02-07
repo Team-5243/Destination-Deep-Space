@@ -46,6 +46,30 @@ public class VisionSubsystem extends Subsystem {
     return table.getEntry("ta").getDouble(0.0);
   }
 
+  public double getShortestSide() {
+    return table.getEntry("tshort").getDouble(0.0);
+  }
+
+  public double getLongestSide() {
+    return table.getEntry("tlong").getDouble(0.0);
+  }
+
+  public double getHorizontal() {
+    return table.getEntry("thor").getDouble(0.0);
+  }
+
+  public double getVertical() {
+    return table.getEntry("tvert").getDouble(0.0);
+  }
+
+  public double getVerticalOffset() {
+    return table.getEntry("ty").getDouble(0.0);
+  }
+
+  public double getHorizontalOffset() {
+    return table.getEntry("tx").getDouble(0.0);
+  }
+
   public void setLed(int mode) {
     table.getEntry("ledMode").setNumber(mode);
   }
