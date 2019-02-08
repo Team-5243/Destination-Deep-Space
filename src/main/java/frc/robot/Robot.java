@@ -82,6 +82,10 @@ public class Robot extends TimedRobot {
     //System.out.println("Area Output: " + m_vision.getArea());
     //System.out.println("Left Speed: " + m_drivetrain.getLeftSpeed());
     //System.out.println("Right Speed: " + m_drivetrain.getRightSpeed());
+    System.out.println("Left X: " + Robot.m_oi.getLeft().getX());
+    System.out.println("Left Y: " + Robot.m_oi.getLeft().getY());
+    System.out.println("Right X: " + Robot.m_oi.getRight().getX());
+    System.out.println("Right Y: " + Robot.m_oi.getRight().getY());
   }
 
   /**

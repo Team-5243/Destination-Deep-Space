@@ -24,8 +24,7 @@ public class DriveSubsystem extends Subsystem {
     DifferentialDrive drive;
     VisionSubsystem vis;
 
-    //Timer runtime;
-    //public double previousTimeStamp;
+    boolean initialAlign;
 
     public DriveSubsystem() {
         fr = new WPI_TalonSRX(RobotMap.frontRight.get());
@@ -35,7 +34,6 @@ public class DriveSubsystem extends Subsystem {
 
         vis = Robot.m_vision;
 
-        //runtime = new Timer();
         //left = new SpeedControllerGroup(fl, bl);
         //right = new SpeedControllerGroup(fr, br);
         br.follow(fr);
@@ -53,14 +51,8 @@ public class DriveSubsystem extends Subsystem {
         fl.setInverted(true);
 
         drive = new DifferentialDrive(fl, fr);
-    }
 
-    public void resetTimer() {
-        //runtime.reset();
-    }
-
-    public void startTimer() {
-        //runtime.start();
+        initialAlign = false;
     }
 
     public void tankDrive() {
@@ -88,19 +80,27 @@ public class DriveSubsystem extends Subsystem {
 
     public void turnLeft() {
         //slowStartStop(.35, -.35);
-        drive.tankDrive(.35, -.35);
-        //drive.tankDrive(fl.get(), fr.get() > -.7 ? fr.get() - 0.01 : -.7);
+        //double speed = Math.pow(vis.getX(), 2) / 512 + 0.25;
+        //drive.tankDrive(speed, -speed);
+        drive.tankDrive(0, -.4);
+        //drive.tankDrive(fl.get(), fr.get() > -.7 ? fr.get() - 0.1 : -.7);
     }
 
     public void turnRight() {
         //slowStartStop(-.35, .35);
-        drive.tankDrive(-.35, .35);
-        //drive.tankDrive(fl.get() > -.7 ? fl.get() - 0.01 : -.7, fr.get());
+        //double speed = Math.pow(vis.getX(), 2) / 512 + 0.25;
+        //drive.tankDrive(-speed, speed);
+        drive.tankDrive(-.4, 0);
+        //drive.tankDrive(fl.get() > -.7 ? fl.get() - 0.1 : -.7, fr.get());
     }
 
     public void forward() {
         //slowStartStop(-.7, -.7);
-        drive.tankDrive(-.7, -.7);
+        if(vis.getArea() < 50) {
+            drive.tankDrive(-.7, -.7);
+        } else {
+            drive.tankDrive(-.4, -.4);
+        }
     }
 
     public void stop() {
@@ -129,13 +129,39 @@ public class DriveSubsystem extends Subsystem {
         // Timer.delay(.5);
         // rotateLeft();
         // rotateRight();
-        
-        if(vis.getX() < -2) {
-            turnLeft();
-        } else if(vis.getX() > 2) {
-            turnRight();
+
+        if(!initialAlign) {
+            if(vis.getX() < -1.5) {
+                drive.tankDrive(.5, -.5);
+            } else if(vis.getX() > 1.5) {
+                drive.tankDrive(-.5, .5);
+            } else if(vis.getArea() != 0) {
+                initialAlign = true;
+            } else {
+                turnLeft();
+            }
         } else {
-            forward();
+            if(vis.getArea() < 50) {
+                if(vis.getX() < -3) {
+                    turnLeft();
+                } else if(vis.getX() > 3) {
+                    turnRight();
+                } else if(vis.getArea() != 0) {
+                    forward();
+                } else {
+                    turnLeft();
+                }
+            } else {
+                if(vis.getX() < -1) {
+                    turnLeft();
+                } else if(vis.getX() > 1) {
+                    turnRight();
+                } else if(vis.getArea() != 0) {
+                    forward();
+                } else {
+                    turnLeft();
+                }
+            }
         }
 
         // while(vis.getArea() <= 80) {
@@ -147,12 +173,10 @@ public class DriveSubsystem extends Subsystem {
         //       forward();  
         //   }
         //   stop();
-
-        //previousTimeStamp = runtime.get();
     }
 
     public boolean isFinishedAlign(){
-        return vis.getArea() >= 80;
+        return vis.getArea() >= 70 || !Robot.m_oi.isJoysticksNeutral();
     }
 
     /*

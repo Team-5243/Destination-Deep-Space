@@ -21,6 +21,7 @@ public class OI {
 
     private Joystick left, right;
     private JoystickButton blinky, bright, dead, auton;
+    //private boolean joysticksNeutral = true;
 
     public OI() {
         left = new Joystick(0);
@@ -45,8 +46,8 @@ public class OI {
         return right;
     }
 
-
-    
-
-
+    public boolean isJoysticksNeutral(){
+        return Math.abs(left.getY()) < 0.1 && Math.abs(left.getX()) < 0.1 &&
+                Math.abs(right.getY()) < 0.1 && Math.abs(right.getX()) < 0.1;
+    }
 }
