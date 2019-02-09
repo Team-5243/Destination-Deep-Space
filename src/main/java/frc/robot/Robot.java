@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -15,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.TridentSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
 
 /**
@@ -27,6 +29,7 @@ import frc.robot.subsystems.TridentSubsystem;
 public class Robot extends TimedRobot {
 
   public static OI m_oi;
+  public static VisionSubsystem m_vision = new VisionSubsystem();
   public static DriveSubsystem m_drivetrain = new DriveSubsystem();
   public static TridentSubsystem m_trident = new TridentSubsystem();
   public static LiftSubsystem m_lift = new LiftSubsystem();
@@ -43,6 +46,8 @@ public class Robot extends TimedRobot {
     m_oi = new OI();
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
+
+    CameraServer.getInstance().startAutomaticCapture();
 
   }
 
@@ -65,6 +70,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    m_trident.disableCompressor();
   }
 
   @Override
@@ -125,6 +131,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+
+    m_trident.setClosedLoopControl(true);
   }
 
   /**

@@ -30,7 +30,11 @@ public enum RobotMap {
 
 	//Lift (placeholder)
 	leftLift(9),
-	rightLift(10);
+	rightLift(10),
+
+	//Hatch DoubleSolenoid (placeholder)
+	hatchPistonF(2),
+	hatchPistonR(3);
 
 	private int port;
 	

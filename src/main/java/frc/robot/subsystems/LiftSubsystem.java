@@ -17,7 +17,7 @@ import frc.robot.RobotMap;
  */
 public class LiftSubsystem extends Subsystem {
 
-  //Includes Lift and Pivot
+  //Includes Lifts and Pivots
 
   WPI_TalonSRX leftLift, rightLift, leftPivot, rightPivot;
 

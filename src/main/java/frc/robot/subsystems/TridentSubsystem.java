@@ -8,18 +8,33 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 
 public class TridentSubsystem extends Subsystem {
 
-    //Includes Cargo and Hatch Mechanisms
+    //Includes Cargo and Hatch Mechanisms (Flywheels, Pistons, Compressor)
 
     private WPI_TalonSRX leftFlywheels, rightFlywheels;
+    private DoubleSolenoid hatchPiston;
+    private Compressor compressor;
 
     public TridentSubsystem() {
         leftFlywheels = new WPI_TalonSRX(RobotMap.leftFlywheels.get());
         rightFlywheels = new WPI_TalonSRX(RobotMap.rightFlywheels.get());
+
+        hatchPiston = new DoubleSolenoid(RobotMap.hatchPistonF.get(), RobotMap.hatchPistonR.get());
+
+        try{
+            compressor = new Compressor();
+            compressor.start();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
         rightFlywheels.follow(leftFlywheels);
 
@@ -33,7 +48,28 @@ public class TridentSubsystem extends Subsystem {
     public void stopFlywheels(){
         leftFlywheels.set(0);
     }
+
+    public void toggleHatchPiston() {
+		if (hatchPiston.get().equals(Value.kReverse) || hatchPiston.get().equals(Value.kOff)) {
+			hatchPiston.set(Value.kForward);
+		} else {
+			hatchPiston.set(Value.kReverse);
+        }
+    }
+
+    public void setClosedLoopControl(boolean on) {
+		if (compressor != null)
+			compressor.setClosedLoopControl(on);
+	}
+	
+	public void disableCompressor() {
+		compressor.stop();
+    }
     
+	public boolean compressorEnabled() {
+		return compressor.enabled();
+	}
+
     @Override
     public void initDefaultCommand() {
     }

@@ -24,6 +24,9 @@ public class DriveSubsystem extends Subsystem {
     //SpeedControllerGroup left, right;
     DifferentialDrive drive;
 
+    VisionSubsystem vis;
+    boolean initialAlign;
+
     public DriveSubsystem() {
         fr = new WPI_TalonSRX(RobotMap.frontRight.get());
         fl = new WPI_TalonSRX(RobotMap.frontLeft.get());
@@ -41,15 +44,92 @@ public class DriveSubsystem extends Subsystem {
         fl.setInverted(true);
 
         drive = new DifferentialDrive(fl, fr);
+
+        vis = Robot.m_vision;
+        initialAlign = false;
     }
 
     public void tankDrive() {
         drive.tankDrive(Robot.m_oi.getLeft().getY(), Robot.m_oi.getRight().getY());
     }
 
+    //TODO: Test to check speed values
+    public void turnLeft() {
+        drive.tankDrive(0, .4);
+    }
+
+    public void turnRight() {
+        drive.tankDrive(.4, 0);
+    }
+
+    public void forward() {
+        if(vis.getArea() < 20) {
+            drive.tankDrive(.6, .6);
+        } else {
+            drive.tankDrive(.4, .4);
+        }
+    }
+
+    public void stop() {
+        drive.tankDrive(0, 0);
+    }
+
     public void setMotors(double left, double right) {
         fl.set(left);
         fr.set(right);
+    }
+
+    public void rotateLeft() {
+        while(vis.getX() < -2) {
+            turnLeft();
+        }
+    }
+
+    public void rotateRight() {
+        while(vis.getX() > 2) {
+            turnRight();
+        }
+    }
+
+    public void alignStraight() {
+        if(!initialAlign) {
+            if(vis.getX() < -1.5) {
+                drive.tankDrive(-.4, .4);
+            } else if(vis.getX() > 1.5) {
+                drive.tankDrive(.4, -.4);
+            } else if(vis.getArea() != 0) {
+                initialAlign = true;
+            } else {
+                turnLeft();
+            }
+        } else {
+            if(vis.getArea() < 15) {
+                if(vis.getX() < -3) {
+                    turnLeft();
+                } else if(vis.getX() > 3) {
+                    turnRight();
+                } else if(vis.getArea() != 0) {
+                    forward();
+                } else {
+                    turnLeft();
+                }
+            } else {
+                if(vis.getX() < -1) {
+                    turnLeft();
+                } else if(vis.getX() > 1) {
+                    turnRight();
+                } else if(vis.getArea() != 0) {
+                    forward();
+                } else {
+                    turnLeft();
+                }
+            }
+        }
+    }
+
+    //Also cancel the auton alignment if the right stick button #5 is pressed
+    public boolean isFinishedAlign(){
+        return vis.getArea() >= 30 || !Robot.m_oi.isJoysticksNeutral();
     }
 
     @Override

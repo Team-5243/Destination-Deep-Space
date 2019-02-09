@@ -9,9 +9,11 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.FlywheelsCommand;
+import frc.robot.commands.LiftCommand;
 import frc.robot.commands.PivotCommand;
-import frc.robot.commands.RunFlywheels;
-import frc.robot.commands.RunLift;
+import frc.robot.commands.ToggleHatchPiston;
+import frc.robot.commands.VisionAlignCommand;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -20,7 +22,7 @@ import frc.robot.commands.RunLift;
 public class OI {
 
     private Joystick left, right;
-    private JoystickButton b_intake, b_outtake, b_raise, b_lower, b_pDown, b_pUp;
+    private JoystickButton b_intake, b_outtake, b_raise, b_lower, b_pDown, b_pUp, b_piston, b_align;
 
     public OI() {
         left = new Joystick(0);
@@ -48,14 +50,22 @@ public class OI {
         b_pDown = new JoystickButton(left, 3);
         b_pUp = new JoystickButton(left, 4);
 
-        b_intake.whileHeld(new RunFlywheels(true));
-        b_outtake.whileHeld(new RunFlywheels(false));
+        b_piston = new JoystickButton(right, 4);
 
-        b_raise.whileHeld(new RunLift(true)); 
-        b_lower.whileHeld(new RunLift(false));
+        b_align = new JoystickButton(right, 6);
+
+        b_intake.whileHeld(new FlywheelsCommand(true));
+        b_outtake.whileHeld(new FlywheelsCommand(false));
+
+        b_raise.whileHeld(new LiftCommand(true)); 
+        b_lower.whileHeld(new LiftCommand(false));
 
         b_pUp.whileHeld(new PivotCommand(true));
         b_pDown.whileHeld(new PivotCommand(false));
+
+        b_piston.whenPressed(new ToggleHatchPiston());
+
+        b_align.whenPressed(new VisionAlignCommand());
     }
 
     public Joystick getLeft() {
@@ -66,7 +76,9 @@ public class OI {
         return right;
     }
 
-    
-
+    public boolean isJoysticksNeutral(){
+        return Math.abs(left.getY()) < 0.1 && Math.abs(left.getX()) < 0.1 &&
+                Math.abs(right.getY()) < 0.1 && Math.abs(right.getX()) < 0.1 && !right.getRawButton(5);
+    }
 
 }
