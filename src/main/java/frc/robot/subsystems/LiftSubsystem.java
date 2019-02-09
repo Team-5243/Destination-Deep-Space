@@ -19,13 +19,17 @@ public class LiftSubsystem extends Subsystem {
 
   //Includes Lift and Pivot
 
-  WPI_TalonSRX leftLift, rightLift;
+  WPI_TalonSRX leftLift, rightLift, leftPivot, rightPivot;
 
   public LiftSubsystem() {
     leftLift = new WPI_TalonSRX(RobotMap.leftLift.get());
     rightLift = new WPI_TalonSRX(RobotMap.rightLift.get());
 
+    leftPivot = new WPI_TalonSRX(RobotMap.leftPivot.get());
+    rightPivot = new WPI_TalonSRX(RobotMap.rightPivot.get());
+
     rightLift.follow(leftLift);
+    rightPivot.follow(leftPivot);
   }
 
   public void elongate(boolean taller) {
@@ -39,6 +43,14 @@ public class LiftSubsystem extends Subsystem {
 
   public void stopLift() {
     leftLift.set(0);
+  }
+
+  public void setPivots(boolean up){
+    leftLift.set(up ? .5 : -.5);
+  }
+
+  public void stopPivots(){
+      leftPivot.set(0);
   }
 
   @Override

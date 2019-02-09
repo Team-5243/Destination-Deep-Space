@@ -9,7 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.Pivot;
+import frc.robot.commands.PivotCommand;
 import frc.robot.commands.RunFlywheels;
 import frc.robot.commands.RunLift;
 
@@ -25,6 +25,18 @@ public class OI {
     public OI() {
         left = new Joystick(0);
         right = new Joystick(1);
+
+        /*
+        Left Joystick:
+            Trigger: Flywheels Intake
+            Button 3 & 4: Pivot
+            Button 5 & 6: Lift
+        
+        Right Joystick:
+            Trigger: Flywheels Outtake
+            Button 3 & 4: Double Solenoid for Hatch
+            Button 6: Vision Align
+        */
 
         //Placeholder
         b_intake = new JoystickButton(left, 1);
@@ -42,8 +54,8 @@ public class OI {
         b_raise.whileHeld(new RunLift(true)); 
         b_lower.whileHeld(new RunLift(false));
 
-        b_pUp.whileHeld(new Pivot(true));
-        b_pDown.whileHeld(new Pivot(false));
+        b_pUp.whileHeld(new PivotCommand(true));
+        b_pDown.whileHeld(new PivotCommand(false));
     }
 
     public Joystick getLeft() {

@@ -9,18 +9,18 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.TridentSubsystem;
+import frc.robot.subsystems.LiftSubsystem;
 
-public class Pivot extends Command {
-  private TridentSubsystem trident;
+public class PivotCommand extends Command {
+  private LiftSubsystem lift;
   private boolean up;
 
-  public Pivot(boolean upDown) {
+  public PivotCommand(boolean up) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    trident = Robot.m_trident;
-    requires(trident);
-    up = upDown;
+    lift = Robot.m_lift;
+    requires(lift);
+    this.up = up;
   }
 
   // Called just before this Command runs the first time
@@ -33,12 +33,7 @@ public class Pivot extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(up){
-      trident.pivotUp();
-    }
-    else{
-      trident.pivotDown();
-    }
+    lift.setPivots(up);
   }
 
 
@@ -51,13 +46,13 @@ public class Pivot extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    trident.stopPivots();
+    lift.stopPivots();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    trident.stopPivots();
+    lift.stopPivots();
   }
 }
