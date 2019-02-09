@@ -96,8 +96,8 @@ public class DriveSubsystem extends Subsystem {
 
     public void forward() {
         //slowStartStop(-.7, -.7);
-        if(vis.getArea() < 50) {
-            drive.tankDrive(-.7, -.7);
+        if(vis.getArea() < 20) {
+            drive.tankDrive(-.6, -.6);
         } else {
             drive.tankDrive(-.4, -.4);
         }
@@ -132,16 +132,16 @@ public class DriveSubsystem extends Subsystem {
 
         if(!initialAlign) {
             if(vis.getX() < -1.5) {
-                drive.tankDrive(.5, -.5);
+                drive.tankDrive(.4, -.4);
             } else if(vis.getX() > 1.5) {
-                drive.tankDrive(-.5, .5);
+                drive.tankDrive(-.4, .4);
             } else if(vis.getArea() != 0) {
                 initialAlign = true;
             } else {
                 turnLeft();
             }
         } else {
-            if(vis.getArea() < 50) {
+            if(vis.getArea() < 15) {
                 if(vis.getX() < -3) {
                     turnLeft();
                 } else if(vis.getX() > 3) {
@@ -163,20 +163,10 @@ public class DriveSubsystem extends Subsystem {
                 }
             }
         }
-
-        // while(vis.getArea() <= 80) {
-        //     if(vis.getX() < -2)
-        //       turnLeft();
-        //     else if(vis.getX() > 2)
-        //       turnRight();
-        //     else
-        //       forward();  
-        //   }
-        //   stop();
     }
 
     public boolean isFinishedAlign(){
-        return vis.getArea() >= 70 || !Robot.m_oi.isJoysticksNeutral();
+        return vis.getArea() >= 30 || !Robot.m_oi.isJoysticksNeutral();
     }
 
     /*
