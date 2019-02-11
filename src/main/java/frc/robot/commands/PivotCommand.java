@@ -33,7 +33,7 @@ public class PivotCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    lift.setPivots(up);
+    //lift.setPivots(up);
   }
 
 
@@ -46,13 +46,13 @@ public class PivotCommand extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    lift.stopPivots();
+    //lift.stopPivots();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    lift.stopPivots();
+    //lift.stopPivots();
   }
 }

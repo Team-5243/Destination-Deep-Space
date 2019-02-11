@@ -15,26 +15,29 @@ package frc.robot;
  */
 public enum RobotMap {
 	//TankDrive
-	frontRight(1), 
-	frontLeft(4),
-	backRight(2),
-	backLeft(3),
+	FRONT_RIGHT(1), 
+	FRONT_LEFT(4),
+	BACK_RIGHT(2),
+	BACK_LEFT(3),
 
 	//Trident (placeholder)
-	leftFlywheels(5),
-	rightFlywheels(6),
+	LEFT_FLYWHEELS(5),
+	RIGHT_FLYWHEELS(6),
 
 	//Pivot (placeholder)
-	leftPivot(7),
-	rightPivot(8),
+	//LEFT_PIVOT(7),
+	//RIGHT_PIVOT(8),
 
 	//Lift (placeholder)
-	leftLift(9),
-	rightLift(10),
+	LEFT_LIFT(9),
+	RIGHT_LIFT(10),
+
+	ENCODER_CHANNEL_A(0),
+	ENCODER_CHANNEL_B(1),
 
 	//Hatch DoubleSolenoid (placeholder)
-	hatchPistonF(2),
-	hatchPistonR(3);
+	HATCH_PISTON_F(2),
+	HATCH_PISTON_R(3);
 
 	private int port;
 	

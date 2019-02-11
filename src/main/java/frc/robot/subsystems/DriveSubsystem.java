@@ -28,10 +28,10 @@ public class DriveSubsystem extends Subsystem {
     boolean initialAlign;
 
     public DriveSubsystem() {
-        fr = new WPI_TalonSRX(RobotMap.frontRight.get());
-        fl = new WPI_TalonSRX(RobotMap.frontLeft.get());
-        br = new WPI_TalonSRX(RobotMap.backRight.get());
-        bl = new WPI_TalonSRX(RobotMap.backLeft.get());
+        fr = new WPI_TalonSRX(RobotMap.FRONT_RIGHT.get());
+        fl = new WPI_TalonSRX(RobotMap.FRONT_LEFT.get());
+        br = new WPI_TalonSRX(RobotMap.BACK_RIGHT.get());
+        bl = new WPI_TalonSRX(RobotMap.BACK_LEFT.get());
 
         //left = new SpeedControllerGroup(fl, bl);
         //right = new SpeedControllerGroup(fr, br);

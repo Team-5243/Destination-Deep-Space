@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.FlywheelsCommand;
 import frc.robot.commands.LiftCommand;
-import frc.robot.commands.PivotCommand;
+//import frc.robot.commands.PivotCommand;
 import frc.robot.commands.ToggleHatchPiston;
 import frc.robot.commands.VisionAlignCommand;
 
@@ -22,8 +22,7 @@ import frc.robot.commands.VisionAlignCommand;
 public class OI {
 
     private Joystick left, right;
-    private JoystickButton b_intake, b_outtake, b_raise, b_lower, b_pDown, b_pUp, b_piston, b_align;
-
+    private JoystickButton b_intake, b_outtake, b_raise, b_lower, b_piston, b_align; /* b_pDown, b_pUp, */ 
     public OI() {
         left = new Joystick(0);
         right = new Joystick(1);
@@ -40,15 +39,14 @@ public class OI {
             Button 6: Vision Align
         */
 
-        //Placeholder
         b_intake = new JoystickButton(left, 1);
         b_outtake = new JoystickButton(right, 1);
 
         b_raise = new JoystickButton(left, 5);
         b_lower = new JoystickButton(left, 6);
 
-        b_pDown = new JoystickButton(left, 3);
-        b_pUp = new JoystickButton(left, 4);
+        //b_pDown = new JoystickButton(left, 3);
+        //b_pUp = new JoystickButton(left, 4);
 
         b_piston = new JoystickButton(right, 4);
 
@@ -60,8 +58,8 @@ public class OI {
         b_raise.whileHeld(new LiftCommand(true)); 
         b_lower.whileHeld(new LiftCommand(false));
 
-        b_pUp.whileHeld(new PivotCommand(true));
-        b_pDown.whileHeld(new PivotCommand(false));
+        //b_pUp.whileHeld(new PivotCommand(true));
+        //b_pDown.whileHeld(new PivotCommand(false));
 
         b_piston.whenPressed(new ToggleHatchPiston());
 
@@ -76,6 +74,7 @@ public class OI {
         return right;
     }
 
+    //Right button #5 also cancels the auto alignment
     public boolean isJoysticksNeutral(){
         return Math.abs(left.getY()) < 0.1 && Math.abs(left.getX()) < 0.1 &&
                 Math.abs(right.getY()) < 0.1 && Math.abs(right.getX()) < 0.1 && !right.getRawButton(5);

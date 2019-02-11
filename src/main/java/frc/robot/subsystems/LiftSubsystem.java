@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 
@@ -19,25 +20,33 @@ public class LiftSubsystem extends Subsystem {
 
   //Includes Lifts and Pivots
 
-  WPI_TalonSRX leftLift, rightLift, leftPivot, rightPivot;
+  WPI_TalonSRX leftLift, rightLift; //, leftPivot, rightPivot;
+  Encoder encoder;
 
   public LiftSubsystem() {
-    leftLift = new WPI_TalonSRX(RobotMap.leftLift.get());
-    rightLift = new WPI_TalonSRX(RobotMap.rightLift.get());
-
-    leftPivot = new WPI_TalonSRX(RobotMap.leftPivot.get());
-    rightPivot = new WPI_TalonSRX(RobotMap.rightPivot.get());
+    leftLift = new WPI_TalonSRX(RobotMap.LEFT_LIFT.get());
+    rightLift = new WPI_TalonSRX(RobotMap.RIGHT_LIFT.get());
+    encoder = new Encoder(RobotMap.ENCODER_CHANNEL_A.get(), RobotMap.ENCODER_CHANNEL_B.get(), false, Encoder.EncodingType.k4X);
+		encoder.setDistancePerPulse(5);
+    
+    //leftPivot = new WPI_TalonSRX(RobotMap.leftPivot.get());
+    //rightPivot = new WPI_TalonSRX(RobotMap.rightPivot.get());
 
     rightLift.follow(leftLift);
-    rightPivot.follow(leftPivot);
+    //rightPivot.follow(leftPivot);
   }
 
+
+  //TODO: test encoder hard limits
   public void elongate(boolean taller) {
-    if(taller) {
+    if(taller && getDistance() < 1000) {
       leftLift.set(.5d);
     }
-    else {
+    else if (getDistance() > 0){
       leftLift.set(-.5d);
+    }
+    else{
+      stopLift();
     }
   }
 
@@ -45,13 +54,38 @@ public class LiftSubsystem extends Subsystem {
     leftLift.set(0);
   }
 
-  public void setPivots(boolean up){
-    leftLift.set(up ? .5 : -.5);
-  }
+  	/**
+	 * 
+	 * @return some count of the encoder - no idea
+	 */
+	public double encoderCount() {
+		return encoder.get();
 
-  public void stopPivots(){
-      leftPivot.set(0);
-  }
+	}
+
+	/**
+	 * 
+	 * @return the supposed distance the encoder has gone - no idea
+	 */
+	public double getDistance() {
+		return encoder.getDistance();
+	}
+
+	/**
+	 * Resets the encoder to its default state
+	 */
+	public void resetEncoder() {
+		encoder.reset();
+	}
+
+
+  // public void setPivots(boolean up){
+  //   leftLift.set(up ? .5 : -.5);
+  // }
+
+  // public void stopPivots(){
+  //     leftPivot.set(0);
+  // }
 
   @Override
   public void initDefaultCommand() {
