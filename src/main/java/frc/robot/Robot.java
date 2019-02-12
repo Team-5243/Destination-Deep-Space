@@ -66,6 +66,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("LimelightX", x);
     SmartDashboard.putNumber("LimelightY", y);
     SmartDashboard.putNumber("LimelightArea", area);
+
+    SmartDashboard.putNumber("Left Speed", m_drivetrain.getLeftSpeed());
+    SmartDashboard.putNumber("Right Speed", m_drivetrain.getRightSpeed());
   }
 
 
@@ -79,10 +82,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    System.out.println("Area Output: " + m_vision.getArea());
+    //System.out.println("Area Output: " + m_vision.getArea());
     //System.out.println("Left Speed: " + m_drivetrain.getLeftSpeed());
     //System.out.println("Right Speed: " + m_drivetrain.getRightSpeed());
-
+    //System.out.println(m_oi.getLeft().getRawButton(5));
+    updateSmartDashboard();
   }
 
   /**

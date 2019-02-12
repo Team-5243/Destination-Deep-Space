@@ -48,6 +48,6 @@ public class OI {
 
     public boolean isJoysticksNeutral(){
         return Math.abs(left.getY()) < 0.1 && Math.abs(left.getX()) < 0.1 &&
-                Math.abs(right.getY()) < 0.1 && Math.abs(right.getX()) < 0.1;
+                Math.abs(right.getY()) < 0.1 && Math.abs(right.getX()) < 0.1 && !left.getRawButtonPressed(5);
     }
 }

@@ -18,7 +18,7 @@ import frc.robot.commands.TankDrive;
 
 
 public class DriveSubsystem extends Subsystem {
-    static final double MAX_ACCELERATION = 0.00001;
+    //static final double MAX_ACCELERATION = 0.00001;
     WPI_TalonSRX fr, fl, br, bl;
     //SpeedControllerGroup left, right;
     DifferentialDrive drive;
@@ -32,10 +32,18 @@ public class DriveSubsystem extends Subsystem {
         br = new WPI_TalonSRX(RobotMap.backRight.get());
         bl = new WPI_TalonSRX(RobotMap.backLeft.get());
 
+        
+
         vis = Robot.m_vision;
 
         //left = new SpeedControllerGroup(fl, bl);
         //right = new SpeedControllerGroup(fr, br);
+
+        fr.setInverted(true);
+        br.setInverted(true);
+        bl.setInverted(true);
+        fl.setInverted(true);
+
         br.follow(fr);
         bl.follow(fl);
 
@@ -43,12 +51,6 @@ public class DriveSubsystem extends Subsystem {
         // fl.setSafetyEnabled(false);
         // br.setSafetyEnabled(false);
         // bl.setSafetyEnabled(false);
-
-
-        fr.setInverted(true);
-        br.setInverted(true);
-        bl.setInverted(true);
-        fl.setInverted(true);
 
         drive = new DifferentialDrive(fl, fr);
 
@@ -59,13 +61,13 @@ public class DriveSubsystem extends Subsystem {
         drive.tankDrive(Robot.m_oi.getLeft().getY(), Robot.m_oi.getRight().getY());
     }
 
-    // public double getLeftSpeed(){
-    //     return fl.get();
-    // }
+    public double getLeftSpeed(){
+        return fl.get();
+    }
 
-    // public double getRightSpeed(){
-    //     return fr.get();
-    // }
+    public double getRightSpeed(){
+        return fr.get();
+    }
 
     public void slowStartStop(double leftDesiredSpeed, double rightDesiredSpeed) {
         //double leftSpeed = fl.get();
@@ -96,7 +98,7 @@ public class DriveSubsystem extends Subsystem {
 
     public void forward() {
         //slowStartStop(-.7, -.7);
-        if(vis.getArea() < 20) {
+        if(vis.getArea() < 15) {
             drive.tankDrive(-.6, -.6);
         } else {
             drive.tankDrive(-.4, -.4);
@@ -166,7 +168,7 @@ public class DriveSubsystem extends Subsystem {
     }
 
     public boolean isFinishedAlign(){
-        return vis.getArea() >= 30 || !Robot.m_oi.isJoysticksNeutral();
+        return vis.getArea() >= 22 || !Robot.m_oi.isJoysticksNeutral();
     }
 
     /*
