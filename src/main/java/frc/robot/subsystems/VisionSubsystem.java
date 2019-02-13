@@ -70,8 +70,24 @@ public class VisionSubsystem extends Subsystem {
     return table.getEntry("tx").getDouble(0.0);
   }
 
+  /*
+  LED Mode:
+  0 - Use the LED Mode set in current pipeline
+  1 - Off
+  2 - Blink
+  3 - On
+
+  Cam Mode:
+  0 - Vision
+  1 - Driver
+  */
+
   public void setLed(int mode) {
     table.getEntry("ledMode").setNumber(mode);
+  }
+
+  public void setCamMode(int mode){
+    table.getEntry("camMode").setNumber(mode);
   }
 
 }

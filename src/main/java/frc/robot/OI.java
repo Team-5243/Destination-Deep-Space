@@ -9,8 +9,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.commands.FlashBoi;
-import frc.robot.commands.RunCommandGroup;
 import frc.robot.commands.VisionAlignCommand;
 
 /**
@@ -20,8 +20,9 @@ import frc.robot.commands.VisionAlignCommand;
 public class OI {
 
     private Joystick left, right;
-    private JoystickButton blinky, bright, dead, auton;
+    private JoystickButton blinky, bright, dead, auton, camMode;
     //private boolean joysticksNeutral = true;
+    private int visionModeValue = 1;
 
     public OI() {
         left = new Joystick(0);
@@ -31,11 +32,20 @@ public class OI {
         bright = new JoystickButton(right, 4);
         dead = new JoystickButton(right, 5);
         auton = new JoystickButton(left, 6);
+        camMode = new JoystickButton(left, 5);
 
         blinky.whenPressed(new FlashBoi(2));
         bright.whenPressed(new FlashBoi(3));
         dead.whenPressed(new FlashBoi(1));
         auton.whenPressed(new VisionAlignCommand());
+        //camMode.whenPressed(new CamSwitchyBoi());
+        camMode.whenPressed(new Command() {
+            @Override
+            protected boolean isFinished() {
+                Robot.m_vision.setCamMode(++visionModeValue % 2);
+                return true;
+            }
+        });
     }
 
     public Joystick getLeft() {

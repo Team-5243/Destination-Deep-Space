@@ -27,10 +27,10 @@ public class DriveSubsystem extends Subsystem {
     boolean initialAlign;
 
     public DriveSubsystem() {
-        fr = new WPI_TalonSRX(RobotMap.frontRight.get());
-        fl = new WPI_TalonSRX(RobotMap.frontLeft.get());
-        br = new WPI_TalonSRX(RobotMap.backRight.get());
-        bl = new WPI_TalonSRX(RobotMap.backLeft.get());
+        fr = new WPI_TalonSRX(RobotMap.Motors.frontRight.get());
+        fl = new WPI_TalonSRX(RobotMap.Motors.frontLeft.get());
+        br = new WPI_TalonSRX(RobotMap.Motors.backRight.get());
+        bl = new WPI_TalonSRX(RobotMap.Motors.backLeft.get());
 
         
 
@@ -101,7 +101,7 @@ public class DriveSubsystem extends Subsystem {
         if(vis.getArea() < 15) {
             drive.tankDrive(-.6, -.6);
         } else {
-            drive.tankDrive(-.4, -.4);
+            drive.tankDrive(-.3, -.3);
         }
     }
 
@@ -154,9 +154,9 @@ public class DriveSubsystem extends Subsystem {
                     turnLeft();
                 }
             } else {
-                if(vis.getX() < -1) {
+                if(vis.getX() < -3) {
                     turnLeft();
-                } else if(vis.getX() > 1) {
+                } else if(vis.getX() > 3) {
                     turnRight();
                 } else if(vis.getArea() != 0) {
                     forward();
@@ -168,7 +168,7 @@ public class DriveSubsystem extends Subsystem {
     }
 
     public boolean isFinishedAlign(){
-        return vis.getArea() >= 22 || !Robot.m_oi.isJoysticksNeutral();
+        return vis.getArea() >= 45 || !Robot.m_oi.isJoysticksNeutral();
     }
 
     /*
