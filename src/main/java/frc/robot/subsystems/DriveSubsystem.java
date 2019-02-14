@@ -25,6 +25,7 @@ public class DriveSubsystem extends Subsystem {
     VisionSubsystem vis;
 
     boolean initialAlign;
+    boolean close;
 
     public DriveSubsystem() {
         fr = new WPI_TalonSRX(RobotMap.Motors.frontRight.get());
@@ -55,6 +56,7 @@ public class DriveSubsystem extends Subsystem {
         drive = new DifferentialDrive(fl, fr);
 
         initialAlign = false;
+        close = false;
     }
 
     public void tankDrive() {
@@ -99,7 +101,7 @@ public class DriveSubsystem extends Subsystem {
     public void forward() {
         //slowStartStop(-.7, -.7);
         if(vis.getArea() < 15) {
-            drive.tankDrive(-.6, -.6);
+            drive.tankDrive(-.5, -.5);
         } else {
             drive.tankDrive(-.3, -.3);
         }
@@ -144,9 +146,9 @@ public class DriveSubsystem extends Subsystem {
             }
         } else {
             if(vis.getArea() < 15) {
-                if(vis.getX() < -3) {
+                if(vis.getX() < -1.5) {
                     turnLeft();
-                } else if(vis.getX() > 3) {
+                } else if(vis.getX() > 1.5) {
                     turnRight();
                 } else if(vis.getArea() != 0) {
                     forward();
@@ -154,21 +156,27 @@ public class DriveSubsystem extends Subsystem {
                     turnLeft();
                 }
             } else {
-                if(vis.getX() < -3) {
-                    turnLeft();
-                } else if(vis.getX() > 3) {
-                    turnRight();
-                } else if(vis.getArea() != 0) {
-                    forward();
+                if(!close) {
+                    setMotors(0, 0);
+                    close = true;
+                    Timer.delay(0.5);
                 } else {
-                    turnLeft();
+                    if(vis.getX() < -.5) {
+                        drive.tankDrive(0, -.2);
+                    } else if(vis.getX() > .5) {
+                        drive.tankDrive(-.2, 0);
+                    } else if(vis.getArea() != 0) {
+                        forward();
+                    } else {
+                        turnLeft();
+                    }
                 }
             }
         }
     }
 
     public boolean isFinishedAlign(){
-        return vis.getArea() >= 45 || !Robot.m_oi.isJoysticksNeutral();
+        return vis.getArea() >= 30 /*45*/ || !Robot.m_oi.isJoysticksNeutral();
     }
 
     /*
