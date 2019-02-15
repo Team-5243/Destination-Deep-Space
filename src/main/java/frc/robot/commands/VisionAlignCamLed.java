@@ -28,6 +28,9 @@ public class VisionAlignCamLed extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    drive.initialAlign = false;
+    drive.close = false;
+    
     vision.setCamMode(0);
     vision.setLed(3);
   }
@@ -35,6 +38,7 @@ public class VisionAlignCamLed extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    //vision.setLed(3);   
     drive.alignStraight();
   }
 
@@ -47,7 +51,7 @@ public class VisionAlignCamLed extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    drive.setMotors(0, 0);
+    drive.stopDrive();
     vision.setCamMode(1);
     vision.setLed(1);
   }
@@ -56,7 +60,7 @@ public class VisionAlignCamLed extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    drive.setMotors(0, 0);
+    drive.stopDrive();
     vision.setCamMode(1);
     vision.setLed(1);
   }

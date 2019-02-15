@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.commands.FlashBoi;
+import frc.robot.commands.VisionAlignCamLed;
 import frc.robot.commands.VisionAlignCommand;
 
 /**
@@ -20,7 +21,7 @@ import frc.robot.commands.VisionAlignCommand;
 public class OI {
 
     private Joystick left, right;
-    private JoystickButton blinky, bright, dead, auton, camMode;
+    private JoystickButton blinky, bright, dead, auton, camMode, autonCamLed;
     //private boolean joysticksNeutral = true;
     private int visionModeValue = 1;
 
@@ -31,12 +32,15 @@ public class OI {
         blinky = new JoystickButton(right, 3);
         bright = new JoystickButton(right, 4);
         dead = new JoystickButton(right, 5);
+
+        camMode = new JoystickButton(left, 4);
+        autonCamLed = new JoystickButton(left, 5);
         auton = new JoystickButton(left, 6);
-        camMode = new JoystickButton(left, 5);
 
         blinky.whenPressed(new FlashBoi(2));
         bright.whenPressed(new FlashBoi(3));
         dead.whenPressed(new FlashBoi(1));
+        autonCamLed.whenPressed(new VisionAlignCamLed());
         auton.whenPressed(new VisionAlignCommand());
         //camMode.whenPressed(new CamSwitchyBoi());
         camMode.whenPressed(new Command() {
@@ -58,6 +62,6 @@ public class OI {
 
     public boolean isJoysticksNeutral(){
         return Math.abs(left.getY()) < 0.15 && Math.abs(left.getX()) < 0.15 &&
-                Math.abs(right.getY()) < 0.15 && Math.abs(right.getX()) < 0.15 && !left.getRawButtonPressed(5);
+                Math.abs(right.getY()) < 0.15 && Math.abs(right.getX()) < 0.15;
     }
 }

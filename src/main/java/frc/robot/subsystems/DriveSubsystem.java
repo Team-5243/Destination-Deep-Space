@@ -22,20 +22,16 @@ public class DriveSubsystem extends Subsystem {
     WPI_TalonSRX fr, fl, br, bl;
     //SpeedControllerGroup left, right;
     DifferentialDrive drive;
-    VisionSubsystem vis;
 
-    boolean initialAlign;
-    boolean close;
+    VisionSubsystem vis;
+    public boolean initialAlign;
+    public boolean close;
 
     public DriveSubsystem() {
         fr = new WPI_TalonSRX(RobotMap.Motors.frontRight.get());
         fl = new WPI_TalonSRX(RobotMap.Motors.frontLeft.get());
         br = new WPI_TalonSRX(RobotMap.Motors.backRight.get());
         bl = new WPI_TalonSRX(RobotMap.Motors.backLeft.get());
-
-        
-
-        vis = Robot.m_vision;
 
         //left = new SpeedControllerGroup(fl, bl);
         //right = new SpeedControllerGroup(fr, br);
@@ -55,6 +51,7 @@ public class DriveSubsystem extends Subsystem {
 
         drive = new DifferentialDrive(fl, fr);
 
+        vis = Robot.m_vision;
         initialAlign = false;
         close = false;
     }
@@ -86,7 +83,7 @@ public class DriveSubsystem extends Subsystem {
         //slowStartStop(.35, -.35);
         //double speed = Math.pow(vis.getX(), 2) / 512 + 0.25;
         //drive.tankDrive(speed, -speed);
-        drive.tankDrive(0, -.4);
+        drive.tankDrive(0, -.5);
         //drive.tankDrive(fl.get(), fr.get() > -.7 ? fr.get() - 0.1 : -.7);
     }
 
@@ -94,20 +91,20 @@ public class DriveSubsystem extends Subsystem {
         //slowStartStop(-.35, .35);
         //double speed = Math.pow(vis.getX(), 2) / 512 + 0.25;
         //drive.tankDrive(-speed, speed);
-        drive.tankDrive(-.4, 0);
+        drive.tankDrive(-.5, 0);
         //drive.tankDrive(fl.get() > -.7 ? fl.get() - 0.1 : -.7, fr.get());
     }
 
     public void forward() {
         //slowStartStop(-.7, -.7);
         if(vis.getArea() < 15) {
-            drive.tankDrive(-.5, -.5);
+            drive.tankDrive(-.6, -.6);
         } else {
             drive.tankDrive(-.3, -.3);
         }
     }
 
-    public void stop() {
+    public void stopDrive() {
         drive.tankDrive(0, 0);
     }
 
@@ -136,47 +133,47 @@ public class DriveSubsystem extends Subsystem {
 
         if(!initialAlign) {
             if(vis.getX() < -1.5) {
-                drive.tankDrive(.4, -.4);
+                drive.tankDrive(.5, -.5);
             } else if(vis.getX() > 1.5) {
-                drive.tankDrive(-.4, .4);
+                drive.tankDrive(-.5, .5);
             } else if(vis.getArea() != 0) {
                 initialAlign = true;
             } else {
                 turnLeft();
             }
         } else {
-            if(vis.getArea() < 15) {
-                if(vis.getX() < -1.5) {
+            if(vis.getArea() < 1) {
+                if(vis.getX() < -3) {
                     turnLeft();
-                } else if(vis.getX() > 1.5) {
+                } else if(vis.getX() > 3) {
                     turnRight();
                 } else if(vis.getArea() != 0) {
                     forward();
                 } else {
-                    turnLeft();
+                    stopDrive();
                 }
             } else {
-                if(!close) {
-                    setMotors(0, 0);
-                    close = true;
-                    Timer.delay(0.5);
-                } else {
-                    if(vis.getX() < -.5) {
-                        drive.tankDrive(0, -.2);
-                    } else if(vis.getX() > .5) {
-                        drive.tankDrive(-.2, 0);
+                // if(!close) {
+                //     setMotors(0, 0);
+                //     close = true;
+                //     Timer.delay(0.5);
+                // } else {
+                    if(vis.getX() < -1.5) {
+                        drive.tankDrive(0, -.45);
+                    } else if(vis.getX() > 1.5) {
+                        drive.tankDrive(-.45, 0);
                     } else if(vis.getArea() != 0) {
                         forward();
                     } else {
-                        turnLeft();
+                        stopDrive();
                     }
-                }
+                //}
             }
         }
     }
 
     public boolean isFinishedAlign(){
-        return vis.getArea() >= 30 /*45*/ || !Robot.m_oi.isJoysticksNeutral();
+        return vis.getArea() >= 3 /*30 <- 45*/ || !Robot.m_oi.isJoysticksNeutral();
     }
 
     /*
