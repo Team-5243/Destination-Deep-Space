@@ -24,9 +24,9 @@ public class LiftSubsystem extends Subsystem {
   Encoder encoder;
 
   public LiftSubsystem() {
-    leftLift = new WPI_TalonSRX(RobotMap.LEFT_LIFT.get());
-    rightLift = new WPI_TalonSRX(RobotMap.RIGHT_LIFT.get());
-    encoder = new Encoder(RobotMap.ENCODER_CHANNEL_A.get(), RobotMap.ENCODER_CHANNEL_B.get(), false, Encoder.EncodingType.k4X);
+    leftLift = new WPI_TalonSRX(RobotMap.Lift.LEFT_LIFT.get());
+    rightLift = new WPI_TalonSRX(RobotMap.Lift.RIGHT_LIFT.get());
+    encoder = new Encoder(RobotMap.Lift.ENCODER_CHANNEL_A.get(), RobotMap.Lift.ENCODER_CHANNEL_B.get(), false, Encoder.EncodingType.k4X);
 		encoder.setDistancePerPulse(5);
     
     //leftPivot = new WPI_TalonSRX(RobotMap.leftPivot.get());

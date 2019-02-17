@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.Robot;
@@ -25,13 +26,14 @@ public class DriveSubsystem extends Subsystem {
     DifferentialDrive drive;
 
     VisionSubsystem vis;
-    boolean initialAlign;
+    public boolean initialAlign;
+    public boolean close;
 
     public DriveSubsystem() {
-        fr = new WPI_TalonSRX(RobotMap.FRONT_RIGHT.get());
-        fl = new WPI_TalonSRX(RobotMap.FRONT_LEFT.get());
-        br = new WPI_TalonSRX(RobotMap.BACK_RIGHT.get());
-        bl = new WPI_TalonSRX(RobotMap.BACK_LEFT.get());
+        fr = new WPI_TalonSRX(RobotMap.Drive.FRONT_RIGHT.get());
+        fl = new WPI_TalonSRX(RobotMap.Drive.FRONT_LEFT.get());
+        br = new WPI_TalonSRX(RobotMap.Drive.BACK_RIGHT.get());
+        bl = new WPI_TalonSRX(RobotMap.Drive.BACK_LEFT.get());
 
         //left = new SpeedControllerGroup(fl, bl);
         //right = new SpeedControllerGroup(fr, br);
@@ -47,6 +49,15 @@ public class DriveSubsystem extends Subsystem {
 
         vis = Robot.m_vision;
         initialAlign = false;
+        close = false;
+    }
+
+    public double getLeftSpeed(){
+        return fl.get();
+    }
+
+    public double getRightSpeed(){
+        return fr.get();
     }
 
     public void tankDrive() {
@@ -63,14 +74,14 @@ public class DriveSubsystem extends Subsystem {
     }
 
     public void forward() {
-        if(vis.getArea() < 20) {
+        if(vis.getArea() < 15) {
             drive.tankDrive(.6, .6);
         } else {
             drive.tankDrive(.4, .4);
         }
     }
 
-    public void stop() {
+    public void stopDrive() {
         drive.tankDrive(0, 0);
     }
 
@@ -94,9 +105,9 @@ public class DriveSubsystem extends Subsystem {
     public void alignStraight() {
         if(!initialAlign) {
             if(vis.getX() < -1.5) {
-                drive.tankDrive(-.4, .4);
-            } else if(vis.getX() > 1.5) {
                 drive.tankDrive(.4, -.4);
+            } else if(vis.getX() > 1.5) {
+                drive.tankDrive(-.4, .4);
             } else if(vis.getArea() != 0) {
                 initialAlign = true;
             } else {
@@ -104,9 +115,9 @@ public class DriveSubsystem extends Subsystem {
             }
         } else {
             if(vis.getArea() < 15) {
-                if(vis.getX() < -3) {
+                if(vis.getX() < -1.5) {
                     turnLeft();
-                } else if(vis.getX() > 3) {
+                } else if(vis.getX() > 1.5) {
                     turnRight();
                 } else if(vis.getArea() != 0) {
                     forward();
@@ -114,14 +125,20 @@ public class DriveSubsystem extends Subsystem {
                     turnLeft();
                 }
             } else {
-                if(vis.getX() < -1) {
-                    turnLeft();
-                } else if(vis.getX() > 1) {
-                    turnRight();
-                } else if(vis.getArea() != 0) {
-                    forward();
+                if(!close) {
+                    setMotors(0, 0);
+                    close = true;
+                    Timer.delay(0.5);
                 } else {
-                    turnLeft();
+                    if(vis.getX() < -.5) {
+                        drive.tankDrive(0, -.2);
+                    } else if(vis.getX() > .5) {
+                        drive.tankDrive(-.2, 0);
+                    } else if(vis.getArea() != 0) {
+                        forward();
+                    } else {
+                        turnLeft();
+                    }
                 }
             }
         }
@@ -131,7 +148,6 @@ public class DriveSubsystem extends Subsystem {
     public boolean isFinishedAlign(){
         return vis.getArea() >= 30 || !Robot.m_oi.isJoysticksNeutral();
     }
-
     @Override
     public void initDefaultCommand() {
         setDefaultCommand(new TankDrive());

@@ -24,10 +24,10 @@ public class TridentSubsystem extends Subsystem {
     private Compressor compressor;
 
     public TridentSubsystem() {
-        leftFlywheels = new WPI_TalonSRX(RobotMap.LEFT_FLYWHEELS.get());
-        rightFlywheels = new WPI_TalonSRX(RobotMap.RIGHT_FLYWHEELS.get());
+        leftFlywheels = new WPI_TalonSRX(RobotMap.Trident.LEFT_FLYWHEELS.get());
+        rightFlywheels = new WPI_TalonSRX(RobotMap.Trident.RIGHT_FLYWHEELS.get());
 
-        hatchPiston = new DoubleSolenoid(RobotMap.HATCH_PISTON_F.get(), RobotMap.HATCH_PISTON_R.get());
+        hatchPiston = new DoubleSolenoid(RobotMap.Trident.HATCH_PISTON_F.get(), RobotMap.Trident.HATCH_PISTON_R.get());
 
         try{
             compressor = new Compressor();

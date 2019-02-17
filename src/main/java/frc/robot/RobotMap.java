@@ -13,40 +13,66 @@ package frc.robot;
  * the wiring easier and significantly reduces the number of magic numbers
  * floating around.
  */
-public enum RobotMap {
-	//TankDrive
-	FRONT_RIGHT(1), 
-	FRONT_LEFT(4),
-	BACK_RIGHT(2),
-	BACK_LEFT(3),
+public class RobotMap {
 
-	//Trident (placeholder)
-	LEFT_FLYWHEELS(5),
-	RIGHT_FLYWHEELS(6),
+	public enum Drive{
+		//TankDrive	
+		FRONT_RIGHT(1), 
+		FRONT_LEFT(4),
+		BACK_RIGHT(2),
+		BACK_LEFT(3);
 
-	//Pivot (placeholder)
-	//LEFT_PIVOT(7),
-	//RIGHT_PIVOT(8),
-
-	//Lift (placeholder)
-	LEFT_LIFT(9),
-	RIGHT_LIFT(10),
-
-	ENCODER_CHANNEL_A(0),
-	ENCODER_CHANNEL_B(1),
-
-	//Hatch DoubleSolenoid (placeholder)
-	HATCH_PISTON_F(2),
-	HATCH_PISTON_R(3);
-
-	private int port;
+		private int port;
 	
-	private RobotMap(int port) {
-		this.port = port;
+		private Drive(int port) {
+			this.port = port;
+		}
+
+		public int get() {
+			return port;
+		}
+	}	
+
+	public enum Trident{
+		//Trident (placeholder)
+		LEFT_FLYWHEELS(5),
+		RIGHT_FLYWHEELS(6),
+
+		//Hatch DoubleSolenoid (placeholder)
+		HATCH_PISTON_F(2),
+		HATCH_PISTON_R(3);
+
+		private int port;
+		
+		private Trident(int port) {
+			this.port = port;
+		}
+
+		public int get() {
+			return port;
+		}
 	}
 
-	public int get() {
-		return port;
-	}
+	public enum Lift{
+		//Pivot (placeholder)
+		//LEFT_PIVOT(7),
+		//RIGHT_PIVOT(8),
 
+		//Lift (placeholder)
+		LEFT_LIFT(12),
+		RIGHT_LIFT(13),
+
+		ENCODER_CHANNEL_A(0),
+		ENCODER_CHANNEL_B(1);
+
+		private int port;
+		
+		private Lift(int port) {
+			this.port = port;
+		}
+
+		public int get() {
+			return port;
+		}
+	}
 }

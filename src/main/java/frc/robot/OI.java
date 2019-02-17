@@ -35,7 +35,8 @@ public class OI {
         
         Right Joystick:
             Trigger: Flywheels Outtake
-            Button 3 & 4: Double Solenoid for Hatch
+            Button 4: Double Solenoid for Hatch
+            Button 5: Cancel Vision Align
             Button 6: Vision Align
         */
 
