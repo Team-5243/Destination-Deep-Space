@@ -19,6 +19,8 @@ import frc.robot.commands.TankDrive;
 
 public class DriveSubsystem extends Subsystem {
     //static final double MAX_ACCELERATION = 0.00001;
+    public static final int AREA_THRESHOLD = 40;
+
     WPI_TalonSRX fr, fl, br, bl;
     //SpeedControllerGroup left, right;
     DifferentialDrive drive;
@@ -83,7 +85,7 @@ public class DriveSubsystem extends Subsystem {
         //slowStartStop(.35, -.35);
         //double speed = Math.pow(vis.getX(), 2) / 512 + 0.25;
         //drive.tankDrive(speed, -speed);
-        drive.tankDrive(0, -.5);
+        drive.tankDrive(0, -.4); //use -.5 for carpet
         //drive.tankDrive(fl.get(), fr.get() > -.7 ? fr.get() - 0.1 : -.7);
     }
 
@@ -91,7 +93,7 @@ public class DriveSubsystem extends Subsystem {
         //slowStartStop(-.35, .35);
         //double speed = Math.pow(vis.getX(), 2) / 512 + 0.25;
         //drive.tankDrive(-speed, speed);
-        drive.tankDrive(-.5, 0);
+        drive.tankDrive(-.4, 0);
         //drive.tankDrive(fl.get() > -.7 ? fl.get() - 0.1 : -.7, fr.get());
     }
 
@@ -131,7 +133,7 @@ public class DriveSubsystem extends Subsystem {
         // rotateLeft();
         // rotateRight();
 
-        if(!initialAlign) {
+        /*if(!initialAlign) {
             if(vis.getX() < -1.5) {
                 drive.tankDrive(.5, -.5);
             } else if(vis.getX() > 1.5) {
@@ -142,7 +144,7 @@ public class DriveSubsystem extends Subsystem {
                 turnLeft();
             }
         } else {
-            if(vis.getArea() < 1) {
+            if(vis.getArea() < 15) {
                 if(vis.getX() < -3) {
                     turnLeft();
                 } else if(vis.getX() > 3) {
@@ -169,13 +171,57 @@ public class DriveSubsystem extends Subsystem {
                     }
                 //}
             }
+        }*/
+
+        double outputPID = Robot.m_vision_drive_pid.output;
+        double outputAnglePID = Robot.m_vision_angle_pid.output;
+
+        if(!initialAlign) {
+            if(vis.getX() < -1.5) {
+                drive.tankDrive(0, -.4);
+            } else if(vis.getX() > 1.5) {
+                drive.tankDrive(-.4, 0);
+            } else if(vis.getArea() != 0) {
+                initialAlign = true;
+            } else {
+                turnLeft();
+            }
+        } else {
+            drive.tankDrive(-outputPID + outputAnglePID, -outputPID - outputAnglePID);
         }
+
+        /*if(!initialAlign) {
+            if(vis.getX() < -1.5) {
+                drive.tankDrive(.5, -.5);
+            } else if(vis.getX() > 1.5) {
+                drive.tankDrive(-.5, .5);
+            } else if(vis.getArea() != 0) {
+                initialAlign = true;
+            } else {
+                turnLeft();
+            }
+        } else {
+            if(vis.getArea() < 15 && vis.getArea() != 0) {
+                if(vis.getX() < -3) {
+                    turnLeft();
+                } else if(vis.getX() > 3) {
+                    turnRight();
+                } else if(vis.getArea() != 0) {
+                    //forward();
+                    drive.tankDrive(-outputPID, -outputPID);
+                } else {
+                    stopDrive();
+                }
+            } else {
+                drive.tankDrive(-outputPID, -outputPID);
+            }
+        }*/
     }
 
     public boolean isFinishedAlign(){
-        return vis.getArea() >= 3 /*30 <- 45*/ || !Robot.m_oi.isJoysticksNeutral();
+        return vis.getArea() >= AREA_THRESHOLD || !Robot.m_oi.isJoysticksNeutral();
+                //|| Robot.m_vision_pid.onTarget(); 
     }
-
     /*
       while(m_vision.getArea() <= 80) {
         if(m_vision.getX() < -2) {

@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -17,6 +16,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.commandgroups.VisionAlign;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.VisionDrivePIDSubsystem;
+import frc.robot.subsystems.VisionPID;
 import frc.robot.subsystems.VisionSubsystem;
 
 /**
@@ -29,6 +30,9 @@ import frc.robot.subsystems.VisionSubsystem;
 public class Robot extends TimedRobot {
 
   public static OI m_oi;
+  public static VisionPID m_vision_pid = new VisionPID();
+  public static VisionDrivePIDSubsystem m_vision_drive_pid = new VisionDrivePIDSubsystem(0.01d, 0d, 2d, DriveSubsystem.AREA_THRESHOLD, -.5, .5);
+  public static VisionDrivePIDSubsystem m_vision_angle_pid = new VisionDrivePIDSubsystem(0.000001d, 0d, 0d, 0, -.1, .1);
   public static VisionSubsystem m_vision = new VisionSubsystem();
   public static DriveSubsystem m_drivetrain = new DriveSubsystem();
 
@@ -69,6 +73,9 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putNumber("Left Speed", m_drivetrain.getLeftSpeed());
     SmartDashboard.putNumber("Right Speed", m_drivetrain.getRightSpeed());
+
+    SmartDashboard.putNumber("PID Output Drive", m_vision_drive_pid.output);
+    SmartDashboard.putNumber("PID Output Angle", m_vision_angle_pid.output);
   }
 
 
