@@ -7,59 +7,120 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
-import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.LiftCommand;
 
 /**
- * Add your docs here.
+ * This {@code class} extends the {@code LiftSubsystem class} in order to effectively
+ * suspend the elevator system once the robot is signaled to maintain its position as
+ * it is currently extended.  The PID system ensures that gravity not affect the
+ * elevator system while in suspension mode, acting as a programatical solution to a
+ * hard stop for the lift system.
+ * 
+ * There does exist a built-in {@code PIDSubsystem} that WPILib provides, but creating
+ * a more direct approach that permits quicker tweaking compelled us to make our own
+ * PID for the {@code LiftSubsystem}.
+ * 
+ * @see LiftSubsystem
+ * @see RobotMap
+ * @see PIDSubsystem
+ * @see Timer
  */
-public class PIDLiftSubsystem extends PIDSubsystem {
-  
-  public WPI_TalonSRX rightLift, leftLift;
-  private Encoder encoder;
+public class PIDLiftSubsystem extends LiftSubsystem {
+  public double p, i, d;
+  public Timer runtime;
+  public double output;
+  public double previousTime;
+  public double desiredValue;
+  public double startTime;
+  public double previousError;
+  public double max;
+  public double min;
 
-  public PIDLiftSubsystem() {
-    super("SubsystemName", 1, 2, 3);
-    rightLift = new WPI_TalonSRX(RobotMap.Lift.RIGHT_LIFT.get());
-    leftLift = new WPI_TalonSRX(RobotMap.Lift.LEFT_LIFT.get());
-    leftLift.follow(rightLift);
-    encoder = new Encoder(RobotMap.Lift.ENCODER_CHANNEL_A.get(), RobotMap.Lift.ENCODER_CHANNEL_B.get(), false, Encoder.EncodingType.k4X);
-    encoder.setDistancePerPulse(.005);
-    setAbsoluteTolerance(.5);
-  }
+  private double integralValue;
+  private boolean resetIntegral;
+  private boolean resetIntegralPeriodically;
 
-  public void resetEncoder() {
-    encoder.reset();
-  }
-
-  public void setTarget(double a) {
-    setSetpoint(a);
-  }
-
-  public double getTarget() {
-    return getSetpoint();
+  public PIDLiftSubsystem(double p, double i, double d, double desiredValue,
+                                double min, double max, boolean resetIntegralPeriodically) {
+    this.p = p;
+    this.i = i;
+    this.d = d;
+    this.desiredValue = desiredValue;
+    this.min = min;
+    this.max = max;
+    this.resetIntegralPeriodically = resetIntegralPeriodically;
+    runtime = new Timer();
+    runtime.reset();
+    runtime.start();
   }
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new LiftCommand(2));
+    // Set the default command for a subsystem here.
+    // setDefaultCommand(new MySpecialCommand());
   }
 
-  @Override
-  protected double returnPIDInput() {
-    return encoder.getDistance();
+  /**
+   * This {@code method} refreshes all of the values required to essentially
+   * create a new PID
+   * 
+   * @see Timer
+   * @see #resetEncoder()
+   */
+  public void reset() {
+    startTime = runtime.getFPGATimestamp();
+    previousTime = 0d;
+    previousError = 0d;
+
+    integralValue = 0d;
+
+    output = 0d;
+
+    resetIntegral = false;
+    resetEncoder();
   }
 
-  @Override
-  protected void usePIDOutput(double output) {
-    rightLift.set(clamp(output, -.5, .5)); 
+  public double trimValue(double value, double min, double max) {
+    return value < min ? min : value > max ? max : value;
   }
 
-  private double clamp(double a, double mi, double ma) {
-    return Math.max(mi, Math.min(ma, a));
+  public void update(double currentValue) {
+    double error = desiredValue - currentValue;
+    //Proportional term
+    output += p * error;
+    //Integral term
+    integralValue += i * error * (runtime.getFPGATimestamp() - previousTime);
+    output += integralValue;
+    //Derivative term
+    output += d * (error - previousError) / (runtime.getFPGATimestamp() - previousTime);
+
+    //Scale output to possible motor values
+    output = trimValue(output, min, max);
+
+    previousError = error;
+    previousTime = runtime.getFPGATimestamp() - startTime;
+
+    if((int)(previousTime) % 4 == 0 && !resetIntegral && resetIntegralPeriodically) {
+      integralValue = 0d;
+      resetIntegral = true;
+    }
+
+    if((int)(previousTime) % 4 != 0) {
+      resetIntegral = false;
+    }
+  }
+
+  public void setDesiredValue(double value) {
+    desiredValue = value;
+  }
+
+  public double getOutput() {
+    return output;
+  }
+
+  public void updateSpeed() {
+    lift(getOutput());
   }
 }

@@ -28,12 +28,12 @@ import frc.robot.subsystems.VisionSubsystem;
  * project.
  */
 public class Robot extends TimedRobot {
-
   public static OI m_oi;
   public static VisionSubsystem m_vision = new VisionSubsystem();
   public static DriveSubsystem m_drivetrain = new DriveSubsystem();
   public static TridentSubsystem m_trident = new TridentSubsystem();
   public static LiftSubsystem m_lift = new LiftSubsystem();
+  public static PIDLiftSubsystem m_lift_pid = new PIDLiftSubsystem(1d, 1d, 1d, 0d, -.5, .5, false);
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -47,8 +47,10 @@ public class Robot extends TimedRobot {
     m_oi = new OI();
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
-    SmartDashboard.putNumber("Encoder Value", m_lift.getDistance());
-    m_lift.resetEncoder();
+    SmartDashboard.putNumber("Encoder Value", m_lift_pid.getDistance());
+    SmartDashboard.putNumber("Lift Speed", m_lift.getLiftSpeed());
+    //m_lift.resetEncoder();
+    //m_lift_pid.resetEncoder();
     CameraServer.getInstance().startAutomaticCapture();
   }
 
@@ -62,7 +64,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    System.out.println("Encoder value: " + m_lift.getDistance());
+    //System.out.println("Encoder value: " + m_lift_pid.getDistance());
   }
 
   /**

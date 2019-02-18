@@ -9,17 +9,23 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
+import frc.robot.RobotMap.LiftModes;
 import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.PIDLiftSubsystem;
 
 public class LiftCommand extends Command {
   LiftSubsystem lift;
-  int mode;
-  public LiftCommand(int m) {
+  //PIDLiftSubsystem lift_pid;
+  
+  public LiftCommand(LiftModes m) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
+    //lift = Robot.m_lift;
     lift = Robot.m_lift;
-    mode = m;
+    RobotMap.liftMode = m;
+
+    //requires(lift);
     requires(lift);
   }
 
@@ -28,16 +34,33 @@ public class LiftCommand extends Command {
   protected void initialize() {
   }
 
-  // Called repeatedly when this Command is scheduled to run
+  /**
+   * Dual button for raising and lowering the lift requires activation checks for both
+   * buttons lest, for example, the robot suspend and raise simultaneously, resulting
+   * in a conflict in elevator movement.
+   * 
+   * @see RobotMap
+   * @see PIDLiftSubsystem
+   * @see RobotMap.LiftModes
+   */
   @Override
   protected void execute() {
-    if (mode == 0) {
+    if(RobotMap.liftMode.equals(LiftModes.RAISE)) {
       lift.elongate(true);
-    } else if (mode == 1) {
+    } else if(RobotMap.liftMode.equals(LiftModes.LOWER)) {
       lift.elongate(false);
-    }
-    else {
-      lift.stopLift();
+    // } else if(RobotMap.liftMode.equals(LiftModes.JUST_SUSPENDED)) {
+    //   //Lift is to set position at which to suspend, but only if both buttons are not activated
+    //   if(!Robot.m_oi.getRaise() && !Robot.m_oi.getLower()) {
+    //     lift_pid.stopLift();
+    //     lift_pid.setDesiredValue(lift_pid.encoderCount());
+    //   }
+    // } else {
+    //   //Lift is to suspend, but only if both raise and lower buttons are not activated
+    //   if(!Robot.m_oi.getRaise() && !Robot.m_oi.getLower()) {
+    //     lift_pid.update(lift_pid.encoderCount());
+    //     lift_pid.updateSpeed();
+    //   }
     }
   }
 
@@ -50,13 +73,13 @@ public class LiftCommand extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.m_lift.stopLift();
+    lift.stopLift();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    Robot.m_lift.stopLift();
+    lift.stopLift();
   }
 }
