@@ -28,7 +28,8 @@ public class LiftSubsystem extends Subsystem {
     rightLift = new WPI_TalonSRX(RobotMap.Lift.RIGHT_LIFT.get());
     encoder = new Encoder(RobotMap.Lift.ENCODER_CHANNEL_A.get(), RobotMap.Lift.ENCODER_CHANNEL_B.get(), false, Encoder.EncodingType.k4X);
 		encoder.setDistancePerPulse(5);
-    
+    //leftLift.setInverted(true);
+    //rightLift.setInverted(true);
     //leftPivot = new WPI_TalonSRX(RobotMap.leftPivot.get());
     //rightPivot = new WPI_TalonSRX(RobotMap.rightPivot.get());
 
@@ -39,11 +40,11 @@ public class LiftSubsystem extends Subsystem {
 
   //TODO: test encoder hard limits
   public void elongate(boolean taller) {
-    if(taller && getDistance() < 1000) {
-      leftLift.set(.5d);
+    if(taller /*&& getDistance() < 1000*/) {
+      leftLift.set(1d);
     }
-    else if (getDistance() > 0){
-      leftLift.set(-.5d);
+    else if (!taller /*getDistance() > 0*/){
+      leftLift.set(-1d);
     }
     else{
       stopLift();

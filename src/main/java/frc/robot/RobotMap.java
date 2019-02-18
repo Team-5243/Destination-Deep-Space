@@ -17,10 +17,10 @@ public class RobotMap {
 
 	public enum Drive{
 		//TankDrive	
-		FRONT_RIGHT(1), 
-		FRONT_LEFT(4),
-		BACK_RIGHT(2),
-		BACK_LEFT(3);
+		FRONT_RIGHT(0), 
+		FRONT_LEFT(3),
+		BACK_RIGHT(1),
+		BACK_LEFT(2);
 
 		private int port;
 	

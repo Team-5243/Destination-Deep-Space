@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.FlywheelsCommand;
 import frc.robot.commands.LiftCommand;
+import frc.robot.commands.SetLiftPositionCommand;
 //import frc.robot.commands.PivotCommand;
 import frc.robot.commands.ToggleHatchPiston;
 import frc.robot.commands.VisionAlignCommand;
@@ -56,15 +57,25 @@ public class OI {
         b_intake.whileHeld(new FlywheelsCommand(true));
         b_outtake.whileHeld(new FlywheelsCommand(false));
 
-        b_raise.whileHeld(new LiftCommand(true)); 
-        b_lower.whileHeld(new LiftCommand(false));
-
         //b_pUp.whileHeld(new PivotCommand(true));
         //b_pDown.whileHeld(new PivotCommand(false));
 
         b_piston.whenPressed(new ToggleHatchPiston());
 
         b_align.whenPressed(new VisionAlignCommand());
+
+        b_raise.whileHeld(new LiftCommand(0));
+        b_lower.whileHeld(new LiftCommand(1));
+        // b_lower.whenReleased(new LiftCommand(2));
+        // b_raise.whenReleased(new LiftCommand(2));
+    }
+
+    public JoystickButton getRaise() {
+        return b_raise;
+    }
+
+    public JoystickButton getLower() {
+        return b_lower;
     }
 
     public Joystick getLeft() {

@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LiftSubsystem;
+import frc.robot.subsystems.PIDLiftSubsystem;
 import frc.robot.subsystems.TridentSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
@@ -46,9 +47,9 @@ public class Robot extends TimedRobot {
     m_oi = new OI();
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
+    SmartDashboard.putNumber("Encoder Value", m_lift.getDistance());
     m_lift.resetEncoder();
     CameraServer.getInstance().startAutomaticCapture();
-
   }
 
   /**
@@ -61,6 +62,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    System.out.println("Encoder value: " + m_lift.getDistance());
   }
 
   /**

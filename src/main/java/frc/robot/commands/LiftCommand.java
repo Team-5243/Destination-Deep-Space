@@ -10,19 +10,17 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.LiftSubsystem;
+import frc.robot.subsystems.PIDLiftSubsystem;
 
 public class LiftCommand extends Command {
-
-  private LiftSubsystem raise;
-  private boolean taller;
-
-  public LiftCommand(boolean up) {
+  LiftSubsystem lift;
+  int mode;
+  public LiftCommand(int m) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    raise = Robot.m_lift;
-    requires(raise);
-
-    taller = up;
+    lift = Robot.m_lift;
+    mode = m;
+    requires(lift);
   }
 
   // Called just before this Command runs the first time
@@ -33,7 +31,14 @@ public class LiftCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    raise.elongate(taller);
+    if (mode == 0) {
+      lift.elongate(true);
+    } else if (mode == 1) {
+      lift.elongate(false);
+    }
+    else {
+      lift.stopLift();
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -45,13 +50,13 @@ public class LiftCommand extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    raise.stopLift();
+    Robot.m_lift.stopLift();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    raise.stopLift();
+    Robot.m_lift.stopLift();
   }
 }
