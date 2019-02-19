@@ -36,11 +36,11 @@ public class RobotMap {
 	}	
 
 	public static enum Trident{
-		//Trident (placeholder)
-		LEFT_FLYWHEELS(5),
+		//Trident
+		LEFT_FLYWHEELS(7),
 		RIGHT_FLYWHEELS(6),
 
-		//Hatch DoubleSolenoid
+		//Hatch DoubleSolenoid (placeholder)
 		HATCH_TOP_PISTON_F(4),
 		HATCH_TOP_PISTON_R(5),
 		HATCH_DOWN_PISTON_F(3),
@@ -62,7 +62,7 @@ public class RobotMap {
 		//LEFT_PIVOT(7),
 		//RIGHT_PIVOT(8),
 
-		//Lift (placeholder)
+		//Lift
 		LIFT(13),
 		//RIGHT_LIFT(13),
 
@@ -84,18 +84,18 @@ public class RobotMap {
 		/*
         Left Joystick:
             Trigger: Flywheels Intake
-            Button 3 & 4: Pivot
-            Button 5 & 6: Lift
+			Button 3: Pivot Up 	 | Button 4: Pivot Down
+            Button 5: Raise Lift | Button 6: Lower Lift
         
         Right Joystick:
             Trigger: Flywheels Outtake
-            Button 4: Double Solenoid for Hatch
-            Button 5: Cancel Vision Align
+            Button 4: Pistons for Hatch
             Button 6: Vision Align
 		*/
+
 		FLYWHEEL_INTAKE(Joysticks.LEFT, 1),
-		//PIVOT_DOWN(Joysticks.LEFT, 3),
-		//PIVOT_UP(Joysticks.LEFT, 4),
+		//PIVOT_UP(Joysticks.LEFT, 3),
+		//PIVOT_DOWN(Joysticks.LEFT, 4),
 		LIFT_RAISE(Joysticks.LEFT, 5),
 		LIFT_LOWER(Joysticks.LEFT, 6),
 		

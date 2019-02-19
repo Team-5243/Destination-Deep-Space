@@ -28,7 +28,7 @@ public class LiftLowerCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    lift.lift(-.5d * .95);
+    lift.setLift(-.5d * .95);
   }
 
   // Make this return true when this Command no longer needs to run execute()

@@ -121,6 +121,6 @@ public class PIDLiftSubsystem extends LiftSubsystem {
   }
 
   public void updateSpeed() {
-    lift(getOutput());
+    setLift(getOutput());
   }
 }

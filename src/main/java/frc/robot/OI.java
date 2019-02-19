@@ -34,15 +34,14 @@ public class OI {
         /*
         Left Joystick:
             Trigger: Flywheels Intake
-            Button 3 & 4: Pivot
-            Button 5 & 6: Lift
+			Button 3: Pivot Up 	 | Button 4: Pivot Down
+            Button 5: Raise Lift | Button 6: Lower Lift
         
         Right Joystick:
             Trigger: Flywheels Outtake
-            Button 4: Double Solenoid for Hatch
-            Button 5: Cancel Vision Align
+            Button 4: Pistons for Hatch
             Button 6: Vision Align
-        */
+		*/
 
         for(Buttons button : Buttons.values()) {
             button.setJoystickButton(new JoystickButton(
@@ -50,19 +49,6 @@ public class OI {
                 button.getButton()
             ));
         }
-
-        //b_intake = new JoystickButton(left, 1);
-        //b_outtake = new JoystickButton(right, 1);
-
-        //b_raise = new JoystickButton(left, 5);
-        //b_lower = new JoystickButton(left, 6);
-
-        //b_pDown = new JoystickButton(left, 3);
-        //b_pUp = new JoystickButton(left, 4);
-
-        //b_piston = new JoystickButton(right, 4);
-
-        //b_align = new JoystickButton(right, 6);
 
         FLYWHEEL_INTAKE.getJoystickButton().whileHeld(new FlywheelsCommand(true));
         FLYWHEEL_OUTTAKE.getJoystickButton().whileHeld(new FlywheelsCommand(false));
@@ -80,25 +66,6 @@ public class OI {
 
         // LIFT_RAISE.getJoystickButton().whenInactive(new LiftCommand(LiftModes.SUSPEND));
         // LIFT_LOWER.getJoystickButton().whenInactive(new LiftCommand(LiftModes.SUSPEND));
-
-        //b_intake.whileHeld(new FlywheelsCommand(true));
-        //b_outtake.whileHeld(new FlywheelsCommand(false));
-
-        //b_pUp.whileHeld(new PivotCommand(true));
-        //b_pDown.whileHeld(new PivotCommand(false));
-
-        /*b_piston.whenPressed(new ToggleHatchPiston());
-
-        b_align.whenPressed(new VisionAlignCommand());
-
-        b_raise.whileHeld(new LiftCommand(LiftModes.RAISE));
-        b_lower.whileHeld(new LiftCommand(LiftModes.LOWER));
-
-        b_raise.whenReleased(new LiftCommand(LiftModes.JUST_SUSPENDED));
-        b_lower.whenReleased(new LiftCommand(LiftModes.JUST_SUSPENDED));
-
-        b_raise.whenInactive(new LiftCommand(LiftModes.SUSPEND));
-        b_lower.whenInactive(new LiftCommand(LiftModes.SUSPEND));*/
     }
 
     public boolean getRaise() {
