@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.Robot;
@@ -61,7 +62,7 @@ public class DriveSubsystem extends Subsystem {
     }
 
     public void tankDrive() {
-        drive.tankDrive(Robot.m_oi.getLeft().getY(), Robot.m_oi.getRight().getY());
+        drive.tankDrive(Robot.m_oi.getController().getY(Hand.kLeft), Robot.m_oi.getController().getY(Hand.kRight));
     }
 
     //TODO: Test to check speed values

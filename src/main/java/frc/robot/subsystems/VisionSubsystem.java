@@ -41,7 +41,7 @@ public class VisionSubsystem extends Subsystem {
   public double getY() {
     return table.getEntry("ty").getDouble(0.0);
   }
-
+  //DO NOT KILL HUMAN
   public double getArea() {
     return table.getEntry("ta").getDouble(0.0);
   }

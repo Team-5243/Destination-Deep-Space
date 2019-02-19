@@ -8,70 +8,58 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.RobotMap.Buttons;
-import frc.robot.RobotMap.Joysticks;
-import frc.robot.RobotMap.LiftModes;
 import frc.robot.commands.FlywheelsCommand;
-import frc.robot.commands.LiftCommand;
 import frc.robot.commands.LiftLowerCommand;
 import frc.robot.commands.LiftRaiseCommand;
 //import frc.robot.commands.PivotCommand;
 import frc.robot.commands.ToggleHatchPiston;
 import frc.robot.commands.VisionAlignCommand;
-import static frc.robot.RobotMap.Buttons.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-    //private JoystickButton b_intake, b_outtake, b_raise, b_lower, b_piston, b_align; /* b_pDown, b_pUp, */ 
+    private XboxController controller;
+    private Button b_intake, b_outtake, b_raise, b_lower, b_piston, b_align; /* b_pDown, b_pUp, */ 
     public OI() {
-        Joysticks.LEFT.setJoystick(new Joystick(0));
-        Joysticks.RIGHT.setJoystick(new Joystick(1));
-
+        controller = new XboxController(0);
         /*
-        Left Joystick:
-            Trigger: Flywheels Intake
-            Button 3 & 4: Pivot
-            Button 5 & 6: Lift
-        
-        Right Joystick:
-            Trigger: Flywheels Outtake
-            Button 4: Double Solenoid for Hatch
-            Button 5: Cancel Vision Align
-            Button 6: Vision Align
+        XBox Controller Guide YAY:
+        Intake - leftBumper
+        Outtake - rightBumper
+        RaiseLift - Y
+        LowerLift - X
+        Piston - A
+        VisionAlign - B
+
         */
+        b_intake = new JoystickButton(controller, RobotMap.Buttons.FLYWHEEL_INTAKE.get());
 
-        for(Buttons button : Buttons.values()) {
-            button.setJoystickButton(new JoystickButton(
-                button.getJoystick().get(),
-                button.getButton()
-            ));
-        }
+        b_outtake = new JoystickButton(controller, RobotMap.Buttons.FLYWHEEL_OUTTAKE.get());
 
-        //b_intake = new JoystickButton(left, 1);
-        //b_outtake = new JoystickButton(right, 1);
+        b_raise = new JoystickButton(controller, RobotMap.Buttons.LIFT_RAISE.get());
+        b_lower = new JoystickButton(controller, RobotMap.Buttons.LIFT_LOWER.get());
 
-        //b_raise = new JoystickButton(left, 5);
-        //b_lower = new JoystickButton(left, 6);
+       // b_pDown = new JoystickButton(left, 3);
+       // b_pUp = new JoystickButton(left, 4);
 
-        //b_pDown = new JoystickButton(left, 3);
-        //b_pUp = new JoystickButton(left, 4);
+        b_piston = new JoystickButton(controller, RobotMap.Buttons.HATCH_PISTON.get());
 
-        //b_piston = new JoystickButton(right, 4);
+        b_align = new JoystickButton(controller, RobotMap.Buttons.VISION_ALIGN.get());
 
-        //b_align = new JoystickButton(right, 6);
+        b_intake.whileHeld(new FlywheelsCommand(true));
+        b_outtake.whileHeld(new FlywheelsCommand(false));
 
-        FLYWHEEL_INTAKE.getJoystickButton().whileHeld(new FlywheelsCommand(true));
-        FLYWHEEL_OUTTAKE.getJoystickButton().whileHeld(new FlywheelsCommand(false));
+        b_piston.whenPressed(new ToggleHatchPiston());
+        b_align.whenPressed(new VisionAlignCommand());
 
-        HATCH_PISTON.getJoystickButton().whenPressed(new ToggleHatchPiston());
-        VISION_ALIGN.getJoystickButton().whenPressed(new VisionAlignCommand());
-
-        LIFT_RAISE.getJoystickButton().whileHeld(new LiftRaiseCommand());
-        LIFT_LOWER.getJoystickButton().whileHeld(new LiftLowerCommand());
+        b_raise.whileHeld(new LiftRaiseCommand());
+        b_lower.whileHeld(new LiftLowerCommand());
         //LIFT_RAISE.getJoystickButton().whileHeld(new LiftCommand(LiftModes.RAISE));
         //LIFT_LOWER.getJoystickButton().whileHeld(new LiftCommand(LiftModes.LOWER));
 
@@ -102,24 +90,20 @@ public class OI {
     }
 
     public boolean getRaise() {
-        return getRight().getRawButtonPressed(5);
+        return controller.getYButtonPressed();
     }
 
     public boolean getLower() {
-        return getLeft().getRawButtonPressed(6);
+        return controller.getXButtonPressed();
     }
 
-    public Joystick getLeft() {
-        return Joysticks.LEFT.get();
-    }
-
-    public Joystick getRight() {
-        return Joysticks.RIGHT.get();
+    public XboxController getController(){
+        return controller;
     }
 
     public boolean isJoysticksNeutral(){
-        return Math.abs(getLeft().getY()) < 0.1 && Math.abs(getLeft().getX()) < 0.1 &&
-                Math.abs(getRight().getY()) < 0.1 && Math.abs(getRight().getX()) < 0.1;
+        return Math.abs(getController().getY(Hand.kLeft)) < 0.1 && Math.abs(getController().getX(Hand.kLeft)) < 0.1 &&
+                Math.abs(getController().getY(Hand.kRight)) < 0.1 && Math.abs(getController().getX(Hand.kRight)) < 0.1;
     }
 
 }

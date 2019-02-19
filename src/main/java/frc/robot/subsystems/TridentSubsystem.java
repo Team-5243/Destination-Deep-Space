@@ -42,7 +42,7 @@ public class TridentSubsystem extends Subsystem {
         leftFlywheels.setInverted(true);
     }
 
-    public void spinyBois(boolean intake) {
+    public void spinnyBois(boolean intake) {
         leftFlywheels.set(intake ? -.5d : 1d);   
     }
 
