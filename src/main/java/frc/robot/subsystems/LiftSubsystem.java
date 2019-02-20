@@ -30,14 +30,14 @@ public class LiftSubsystem extends Subsystem {
     //leftPivot = new WPI_TalonSRX(RobotMap.leftPivot.get());
     //rightPivot = new WPI_TalonSRX(RobotMap.rightPivot.get());
     
-    // encoder = new Encoder(RobotMap.Lift.ENCODER_CHANNEL_A.get(), RobotMap.Lift.ENCODER_CHANNEL_B.get(), false, Encoder.EncodingType.k4X);
-    // encoder.setDistancePerPulse(5);
+    //encoder = new Encoder(RobotMap.Lift.ENCODER_CHANNEL_A.get(), RobotMap.Lift.ENCODER_CHANNEL_B.get(), false, Encoder.EncodingType.k4X);
+    //encoder.setDistancePerPulse(5);
     
     //leftLift.setInverted(true);
     //rightLift.setInverted(true);
     lift.setNeutralMode(NeutralMode.Brake);
-    // rightLift.setNeutralMode(NeutralMode.Brake);
-    // rightLift.follow(lift);
+    //rightLift.setNeutralMode(NeutralMode.Brake);
+    //rightLift.follow(lift);
     //rightPivot.follow(leftPivot);
   }
 

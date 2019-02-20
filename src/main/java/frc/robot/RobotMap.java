@@ -36,15 +36,15 @@ public class RobotMap {
 	}	
 
 	public static enum Trident{
-		//Trident (placeholder)
-		LEFT_FLYWHEELS(5),
+		//Trident
+		LEFT_FLYWHEELS(7),
 		RIGHT_FLYWHEELS(6),
 
-		//Hatch DoubleSolenoid
-		HATCH_TOP_PISTON_F(4),
-		HATCH_TOP_PISTON_R(5),
-		HATCH_DOWN_PISTON_F(3),
-		HATCH_DOWN_PISTON_R(2);
+		//Hatch DoubleSolenoid (placeholder)
+		HATCH_TOP_PISTON_F(3),
+		HATCH_TOP_PISTON_R(2);
+		// HATCH_DOWN_PISTON_F(4),
+		// HATCH_DOWN_PISTON_R(5);
 
 		private int port;
 		
@@ -62,7 +62,7 @@ public class RobotMap {
 		//LEFT_PIVOT(7),
 		//RIGHT_PIVOT(8),
 
-		//Lift (placeholder)
+		//Lift
 		LIFT(13),
 		//RIGHT_LIFT(13),
 
@@ -84,15 +84,15 @@ public class RobotMap {
 		/*
         Left Joystick:
             Trigger: Flywheels Intake
-            Button 3 & 4: Pivot
-            Button 5 & 6: Lift
+			Button 3: Pivot Up 	 | Button 4: Pivot Down
+            Button 5: Raise Lift | Button 6: Lower Lift
         
         Right Joystick:
             Trigger: Flywheels Outtake
-            Button 4: Double Solenoid for Hatch
-            Button 5: Cancel Vision Align
+            Button 4: Pistons for Hatch
             Button 6: Vision Align
 		*/
+
 		FLYWHEEL_INTAKE(Joysticks.LEFT, 1),
 		//PIVOT_DOWN(Joysticks.LEFT, 3),
 		//PIVOT_UP(Joysticks.LEFT, 4),
@@ -100,7 +100,8 @@ public class RobotMap {
 		LIFT_LOWER(Joysticks.LEFT, 6),
 		
 		FLYWHEEL_OUTTAKE(Joysticks.RIGHT, 1),
-		HATCH_PISTON(Joysticks.RIGHT, 4),
+		HATCH_PISTON_TOGGLE(Joysticks.RIGHT, 4),
+		//HATCH_PISTON_RETRACT(Joysticks.RIGHT, 3),
 		VISION_ALIGN(Joysticks.RIGHT, 6);
 
 		private int buttonNumber;

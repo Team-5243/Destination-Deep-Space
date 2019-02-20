@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -46,12 +45,16 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     m_oi = new OI();
     // chooser.addOption("My Auto", new MyAutoCommand());
-    SmartDashboard.putData("Auto mode", m_chooser);
-    SmartDashboard.putNumber("Encoder Value", m_lift_pid.getDistance());
-    SmartDashboard.putNumber("Lift Speed", m_lift.getLiftSpeed());
+    //SmartDashboard.putData("Auto mode", m_chooser);
     //m_lift.resetEncoder();
     //m_lift_pid.resetEncoder();
-    CameraServer.getInstance().startAutomaticCapture();
+    updateSmartDashboard();
+  }
+
+  public void updateSmartDashboard(){
+    SmartDashboard.putNumber("Encoder Value", m_lift_pid.getDistance());
+    SmartDashboard.putNumber("Lift Speed", m_lift.getLiftSpeed());
+    SmartDashboard.putString("Solenoid Mode", m_trident.getTopPiston());
   }
 
   /**
@@ -65,6 +68,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     //System.out.println("Encoder value: " + m_lift_pid.getDistance());
+    //System.out.println(m_trident.hatchTopPiston.getName());
   }
 
   /**

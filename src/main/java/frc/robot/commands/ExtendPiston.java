@@ -9,48 +9,47 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.TridentSubsystem;
 
-public class VisionAlignCommand extends Command {
+public class ExtendPiston extends Command {
   
-  DriveSubsystem drive;
-  
-  public VisionAlignCommand() {
+  TridentSubsystem trident;
+
+  public ExtendPiston() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    drive = Robot.m_drivetrain;
-    requires(drive);
+    trident = Robot.m_trident;
+    requires(trident);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    drive.initialAlign = false;
-    drive.close = false;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    drive.alignStraight();
+    //trident.toggleHatchPiston();
+    trident.extendPiston();
+
+    System.out.println("Extend piston");
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return drive.isFinishedAlign();
+    return true;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    drive.stopDrive();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    drive.stopDrive();
   }
 }

@@ -20,7 +20,7 @@ public class TridentSubsystem extends Subsystem {
     //Includes Cargo and Hatch Mechanisms (Flywheels, Pistons, Compressor)
 
     private WPI_TalonSRX leftFlywheels, rightFlywheels;
-    private DoubleSolenoid hatchTopPiston, hatchBottomPiston;
+    public DoubleSolenoid hatchTopPiston, hatchBottomPiston;
     private Compressor compressor;
 
     public TridentSubsystem() {
@@ -28,8 +28,7 @@ public class TridentSubsystem extends Subsystem {
         rightFlywheels = new WPI_TalonSRX(RobotMap.Trident.RIGHT_FLYWHEELS.get());
 
         hatchTopPiston = new DoubleSolenoid(RobotMap.Trident.HATCH_TOP_PISTON_F.get(), RobotMap.Trident.HATCH_TOP_PISTON_R.get());
-        hatchBottomPiston = new DoubleSolenoid(RobotMap.Trident.HATCH_DOWN_PISTON_F.get(), RobotMap.Trident.HATCH_DOWN_PISTON_R.get());
-
+        //hatchBottomPiston = new DoubleSolenoid(RobotMap.Trident.HATCH_DOWN_PISTON_F.get(), RobotMap.Trident.HATCH_DOWN_PISTON_R.get());
         try{
             compressor = new Compressor();
             compressor.start();
@@ -53,11 +52,23 @@ public class TridentSubsystem extends Subsystem {
     public void toggleHatchPiston() {
 		if (hatchTopPiston.get().equals(Value.kReverse) || hatchTopPiston.get().equals(Value.kOff)) {
             hatchTopPiston.set(Value.kForward);
-            hatchBottomPiston.set(Value.kForward);
+            //hatchBottomPiston.set(Value.kForward);
 		} else {
             hatchTopPiston.set(Value.kReverse);
-            hatchBottomPiston.set(Value.kReverse);
+            //hatchBottomPiston.set(Value.kReverse);
         }
+    }
+
+    public void extendPiston(){
+        hatchTopPiston.set(Value.kForward);
+    }
+
+    public void retractPiston(){
+        hatchTopPiston.set(Value.kReverse);
+    }
+
+    public String getTopPiston(){
+        return hatchTopPiston.get() == Value.kForward ? "forward" : hatchTopPiston.get() == Value.kReverse ? "reverse" : "off";
     }
 
     public void setClosedLoopControl(boolean on) {
@@ -76,7 +87,4 @@ public class TridentSubsystem extends Subsystem {
     @Override
     public void initDefaultCommand() {
     }
-
-
-
 }

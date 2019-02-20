@@ -12,12 +12,14 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.RobotMap.Buttons;
 import frc.robot.RobotMap.Joysticks;
 import frc.robot.RobotMap.LiftModes;
+import frc.robot.commands.ExtendPiston;
 import frc.robot.commands.FlywheelsCommand;
 import frc.robot.commands.LiftCommand;
 import frc.robot.commands.LiftLowerCommand;
 import frc.robot.commands.LiftRaiseCommand;
-//import frc.robot.commands.PivotCommand;
+import frc.robot.commands.RetractPiston;
 import frc.robot.commands.ToggleHatchPiston;
+//import frc.robot.commands.PivotCommand;
 import frc.robot.commands.VisionAlignCommand;
 import static frc.robot.RobotMap.Buttons.*;
 
@@ -34,21 +36,17 @@ public class OI {
         /*
         Left Joystick:
             Trigger: Flywheels Intake
-            Button 3 & 4: Pivot
-            Button 5 & 6: Lift
+			Button 3: Pivot Up 	 | Button 4: Pivot Down
+            Button 5: Raise Lift | Button 6: Lower Lift
         
         Right Joystick:
             Trigger: Flywheels Outtake
-            Button 4: Double Solenoid for Hatch
-            Button 5: Cancel Vision Align
+            Button 4: Pistons for Hatch
             Button 6: Vision Align
-        */
+		*/
 
         for(Buttons button : Buttons.values()) {
-            button.setJoystickButton(new JoystickButton(
-                button.getJoystick().get(),
-                button.getButton()
-            ));
+            button.setJoystickButton(new JoystickButton(button.getJoystick().get(), button.getButton()));
         }
 
         //b_intake = new JoystickButton(left, 1);
@@ -67,7 +65,8 @@ public class OI {
         FLYWHEEL_INTAKE.getJoystickButton().whileHeld(new FlywheelsCommand(true));
         FLYWHEEL_OUTTAKE.getJoystickButton().whileHeld(new FlywheelsCommand(false));
 
-        HATCH_PISTON.getJoystickButton().whenPressed(new ToggleHatchPiston());
+        HATCH_PISTON_TOGGLE.getJoystickButton().whenPressed(new ToggleHatchPiston());
+        //HATCH_PISTON_RETRACT.getJoystickButton().whenPressed(new RetractPiston());
         VISION_ALIGN.getJoystickButton().whenPressed(new VisionAlignCommand());
 
         LIFT_RAISE.getJoystickButton().whileHeld(new LiftRaiseCommand());
@@ -102,7 +101,7 @@ public class OI {
     }
 
     public boolean getRaise() {
-        return getRight().getRawButtonPressed(5);
+        return getLeft().getRawButtonPressed(5);
     }
 
     public boolean getLower() {
