@@ -80,7 +80,7 @@ public class RobotMap {
 		}
 	}
 
-	public static enum Buttons{
+	public static enum XBoxButtons{
 		/* XBoxController Mapping:
 
         The buttons on the controller follow this mapping
@@ -119,7 +119,7 @@ public class RobotMap {
 
 		private int buttonNumber;
 
-		private Buttons(int buttonNumber){
+		private XBoxButtons(int buttonNumber){
 			this.buttonNumber = buttonNumber;
 		}
 
@@ -128,6 +128,67 @@ public class RobotMap {
 		}
 	}
 
+	public static enum JoysticksButtons{
+		/*
+        Left Joystick:
+            Trigger: Flywheels Intake
+            Button 3 & 4: Pivot
+            Button 5 & 6: Lift
+        
+        Right Joystick:
+            Trigger: Flywheels Outtake
+            Button 4: Double Solenoid for Hatch
+            Button 6: Vision Align
+		*/
+		FLYWHEEL_INTAKE(Joysticks.LEFT, 1),
+		//PIVOT_DOWN(Joysticks.LEFT, 3),
+		//PIVOT_UP(Joysticks.LEFT, 4),
+		LIFT_RAISE(Joysticks.LEFT, 5),
+		LIFT_LOWER(Joysticks.LEFT, 6),
+		
+		FLYWHEEL_OUTTAKE(Joysticks.RIGHT, 1),
+		HATCH_PISTON(Joysticks.RIGHT, 4),
+		VISION_ALIGN(Joysticks.RIGHT, 6);
+
+		private int buttonNumber;
+		private Joysticks joystick;
+		private JoystickButton button;
+
+		private JoysticksButtons(Joysticks joystick, int buttonNumber){
+			this.buttonNumber = buttonNumber;
+			this.joystick = joystick;
+		}
+
+		public int getButton(){
+			return buttonNumber;
+		}
+
+		public Joysticks getJoystick() {
+			return joystick;
+		}
+
+		public void setJoystickButton(JoystickButton button) {
+			this.button = button;
+		}
+
+		public JoystickButton getJoystickButton() {
+			return button;
+		}
+	}
+
+	public static enum Joysticks {
+		LEFT, RIGHT;
+
+		private Joystick joystick;
+
+		public void setJoystick(Joystick joystick) {
+			this.joystick = joystick;
+		}
+
+		public Joystick get() {
+			return joystick;
+		}
+	}
 
 	public static LiftModes liftMode = LiftModes.SUSPEND; //Default to the lift not moving
 

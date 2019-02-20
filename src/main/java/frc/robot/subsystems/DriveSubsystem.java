@@ -62,7 +62,7 @@ public class DriveSubsystem extends Subsystem {
     }
 
     public void tankDrive() {
-        drive.tankDrive(Robot.m_oi.getController().getY(Hand.kLeft), Robot.m_oi.getController().getY(Hand.kRight));
+        drive.tankDrive(Robot.m_oi.getLeftYAxis(), Robot.m_oi.getRightYAxis());
     }
 
     //TODO: Test to check speed values

@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -29,6 +28,7 @@ import frc.robot.subsystems.VisionSubsystem;
  */
 public class Robot extends TimedRobot {
   public static OI m_oi;
+  public static boolean m_xbox;
   public static VisionSubsystem m_vision = new VisionSubsystem();
   public static DriveSubsystem m_drivetrain = new DriveSubsystem();
   public static TridentSubsystem m_trident = new TridentSubsystem();
@@ -36,6 +36,8 @@ public class Robot extends TimedRobot {
   public static PIDLiftSubsystem m_lift_pid = new PIDLiftSubsystem(1d, 1d, 1d, 0d, -.5, .5, false);
 
   Command m_autonomousCommand;
+  // Command m_controlCommand;
+  // SendableChooser<Command> m_oiChooser = new SendableChooser<>();
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   /**
@@ -44,14 +46,19 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_oi = new OI();
+    // m_oiChooser.setDefaultOption("Joysticks Control", new ChangeControls(true));
+    // m_oiChooser.addOption("XBox Control", new ChangeControls(false));
+    // SmartDashboard.putData("Controls", m_oiChooser);
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
     SmartDashboard.putNumber("Encoder Value", m_lift_pid.getDistance());
     SmartDashboard.putNumber("Lift Speed", m_lift.getLiftSpeed());
+
+    m_oi = new OI();
+
     //m_lift.resetEncoder();
     //m_lift_pid.resetEncoder();
-    CameraServer.getInstance().startAutomaticCapture();
+    //CameraServer.getInstance().startAutomaticCapture();
   }
 
   /**
@@ -65,6 +72,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     //System.out.println("Encoder value: " + m_lift_pid.getDistance());
+    System.out.println("Joysticks Control: " + m_oi.isJoysticks);
   }
 
   /**
@@ -95,7 +103,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_chooser.getSelected();
+    //m_autonomousCommand = m_chooser.getSelected();
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -105,9 +113,14 @@ public class Robot extends TimedRobot {
      */
 
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.start();
-    }
+    // if (m_autonomousCommand != null) {
+    //   m_autonomousCommand.start();
+    // }
+
+    // m_controlCommand = m_oiChooser.getSelected();
+    // if (m_controlCommand != null) {
+    //     m_controlCommand.start();
+    // }
   }
 
   /**
@@ -124,9 +137,13 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
-    }
+    // if (m_autonomousCommand != null) {
+    //   m_autonomousCommand.cancel();
+    // }
+    // m_controlCommand = m_oiChooser.getSelected();
+    // if (m_controlCommand != null) {
+    //     m_controlCommand.start();
+    // }
   }
 
   /**
