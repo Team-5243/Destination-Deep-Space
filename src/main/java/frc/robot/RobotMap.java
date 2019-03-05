@@ -41,10 +41,10 @@ public class RobotMap {
 		RIGHT_FLYWHEELS(6),
 
 		//Hatch DoubleSolenoid (placeholder)
-		HATCH_TOP_PISTON_F(3),
-		HATCH_TOP_PISTON_R(2);
-		// HATCH_DOWN_PISTON_F(4),
-		// HATCH_DOWN_PISTON_R(5);
+		HATCH_TOP_PISTON_F(4),
+		HATCH_TOP_PISTON_R(5),
+		HATCH_DOWN_PISTON_F(3),
+		HATCH_DOWN_PISTON_R(2);
 
 		private int port;
 		
@@ -94,8 +94,8 @@ public class RobotMap {
 		*/
 
 		FLYWHEEL_INTAKE(Joysticks.LEFT, 1),
-		//PIVOT_DOWN(Joysticks.LEFT, 3),
-		//PIVOT_UP(Joysticks.LEFT, 4),
+		//PIVOT_UP(Joysticks.LEFT, 3),
+		//PIVOT_DOWN(Joysticks.LEFT, 4),
 		LIFT_RAISE(Joysticks.LEFT, 5),
 		LIFT_LOWER(Joysticks.LEFT, 6),
 		

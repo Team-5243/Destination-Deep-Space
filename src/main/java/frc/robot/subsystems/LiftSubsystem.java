@@ -18,7 +18,7 @@ import frc.robot.RobotMap;
  * Add your docs here.
  */
 public class LiftSubsystem extends Subsystem {
-  //Includes Lifts and Pivots
+  //Includes Lift(s) and Pivots
 
   WPI_TalonSRX lift; //rightLift, leftPivot, rightPivot;
   //Encoder encoder;
@@ -33,10 +33,9 @@ public class LiftSubsystem extends Subsystem {
     //encoder = new Encoder(RobotMap.Lift.ENCODER_CHANNEL_A.get(), RobotMap.Lift.ENCODER_CHANNEL_B.get(), false, Encoder.EncodingType.k4X);
     //encoder.setDistancePerPulse(5);
     
-    //leftLift.setInverted(true);
-    //rightLift.setInverted(true);
     lift.setNeutralMode(NeutralMode.Brake);
-    //rightLift.setNeutralMode(NeutralMode.Brake);
+    // rightLift.setNeutralMode(NeutralMode.Brake);
+
     //rightLift.follow(lift);
     //rightPivot.follow(leftPivot);
   }
@@ -55,7 +54,7 @@ public class LiftSubsystem extends Subsystem {
     }
   }
 
-  public void lift(double speed) {
+  public void setLift(double speed) {
     lift.set(speed);
   }
 
