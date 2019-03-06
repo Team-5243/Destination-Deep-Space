@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.RobotMap.Buttons;
 import frc.robot.RobotMap.Joysticks;
 import frc.robot.RobotMap.LiftModes;
-import frc.robot.commands.ExtendPiston;
 import frc.robot.commands.FlywheelsCommand;
 import frc.robot.commands.LiftCommand;
 import frc.robot.commands.LiftLowerCommand;
@@ -54,7 +53,7 @@ public class OI {
         FLYWHEEL_INTAKE.getJoystickButton().whileHeld(new FlywheelsCommand(true));
         FLYWHEEL_OUTTAKE.getJoystickButton().whileHeld(new FlywheelsCommand(false));
 
-        HATCH_PISTON_TOGGLE.getJoystickButton().whenPressed(new ToggleHatchPiston());
+        HATCH_PISTON.getJoystickButton().whenPressed(new ToggleHatchPiston());
         //HATCH_PISTON_RETRACT.getJoystickButton().whenPressed(new RetractPiston());
         VISION_ALIGN.getJoystickButton().whenPressed(new VisionAlignCommand());
 
