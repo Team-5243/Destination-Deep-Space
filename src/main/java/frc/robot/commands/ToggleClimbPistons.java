@@ -9,17 +9,19 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.FlyingHatchSubsystem;
+import frc.robot.subsystems.ClimbSubsystem;
 
-public class ToggleHatchPiston extends Command {
-  
-  FlyingHatchSubsystem trident;
+public class ToggleClimbPistons extends Command {
 
-  public ToggleHatchPiston() {
+  ClimbSubsystem climb;
+  boolean isFront;
+
+  public ToggleClimbPistons(boolean isFront) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    trident = Robot.m_flyhatch;
-    requires(trident);
+    climb = Robot.m_climb;
+    requires(climb);
+    this.isFront = isFront;
   }
 
   // Called just before this Command runs the first time
@@ -30,7 +32,8 @@ public class ToggleHatchPiston extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    trident.toggleHatchPiston();
+    if(isFront) climb.toggleFrontClimb();
+    else        climb.toggleBackClimb();
   }
 
   // Make this return true when this Command no longer needs to run execute()

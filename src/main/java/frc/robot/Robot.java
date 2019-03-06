@@ -13,10 +13,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.PIDLiftSubsystem;
-import frc.robot.subsystems.TridentSubsystem;
+import frc.robot.subsystems.FlyingHatchSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 
@@ -31,7 +32,8 @@ public class Robot extends TimedRobot {
   public static OI m_oi;
   public static VisionSubsystem m_vision = new VisionSubsystem();
   public static DriveSubsystem m_drivetrain = new DriveSubsystem();
-  public static TridentSubsystem m_trident = new TridentSubsystem();
+  public static FlyingHatchSubsystem m_flyhatch = new FlyingHatchSubsystem();
+  public static ClimbSubsystem m_climb = new ClimbSubsystem();
   public static LiftSubsystem m_lift = new LiftSubsystem();
   public static PIDLiftSubsystem m_lift_pid = new PIDLiftSubsystem(1d, 1d, 1d, 0d, -.5, .5, false);
 
@@ -46,12 +48,17 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     m_oi = new OI();
     // chooser.addOption("My Auto", new MyAutoCommand());
-    SmartDashboard.putData("Auto mode", m_chooser);
-    SmartDashboard.putNumber("Encoder Value", m_lift.getDistance());
-    SmartDashboard.putNumber("Lift Speed", m_lift.getLiftSpeed());
+    //SmartDashboard.putData("Auto mode", m_chooser);
     //m_lift.resetEncoder();
     //m_lift_pid.resetEncoder();
-    CameraServer.getInstance().startAutomaticCapture();
+    updateSmartDashboard();
+  }
+
+  public void updateSmartDashboard(){
+    SmartDashboard.putNumber("Encoder Value", m_lift.getDistance());
+    SmartDashboard.putNumber("Lift Speed", m_lift.getLiftSpeed());
+    SmartDashboard.putString("Hatch Solenoid Mode", m_flyhatch.getTopPiston());
+    SmartDashboard.putString("Front Climb Solenoid Mode", m_climb.getFrontLeftPiston());
   }
 
   /**
@@ -74,7 +81,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
-    m_trident.disableCompressor();
+    m_flyhatch.disableCompressor();
   }
 
   @Override
@@ -136,7 +143,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
 
-    m_trident.setClosedLoopControl(true);
+    m_flyhatch.setClosedLoopControl(true);
   }
 
   /**

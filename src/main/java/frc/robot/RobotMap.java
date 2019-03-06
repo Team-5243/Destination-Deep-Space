@@ -35,7 +35,7 @@ public class RobotMap {
 		}
 	}	
 
-	public static enum Trident{
+	public static enum Trident {
 		//Trident
 		LEFT_FLYWHEELS(7),
 		RIGHT_FLYWHEELS(6),
@@ -57,7 +57,30 @@ public class RobotMap {
 		}
 	}
 
-	public static enum Lift{
+	public static enum Climb {
+		BACK_RIGHT(6, 7),
+		BACK_LEFT(8, 9),
+		FRONT_RIGHT(10, 11),
+		FRONT_LEFT(12, 13);
+
+		private int forward;
+		private int reverse;
+
+		private Climb(int forward, int reverse) {
+			this.forward = forward;
+			this.reverse = reverse;
+		}
+
+		public int getForward(){
+			return forward;
+		}
+
+		public int getReverse(){
+			return reverse;
+		}
+	}
+
+	public static enum Lift {
 		//Pivot (placeholder)
 		//LEFT_PIVOT(7),
 		//RIGHT_PIVOT(8),
@@ -80,7 +103,7 @@ public class RobotMap {
 		}
 	}
 
-	public static enum Buttons{
+	public static enum Buttons {
 		/*
         Left Joystick:
             Trigger: Flywheels Intake
@@ -90,7 +113,8 @@ public class RobotMap {
         Right Joystick:
             Trigger: Flywheels Outtake
             Button 4: Pistons for Hatch
-            Button 6: Vision Align
+			Button 6: Vision Align
+			Button 5: Front Climb | Button 3: Back Climb
 		*/
 
 		FLYWHEEL_INTAKE(Joysticks.LEFT, 1),
@@ -101,7 +125,9 @@ public class RobotMap {
 		
 		FLYWHEEL_OUTTAKE(Joysticks.RIGHT, 1),
 		HATCH_PISTON(Joysticks.RIGHT, 4),
-		VISION_ALIGN(Joysticks.RIGHT, 6);
+		VISION_ALIGN(Joysticks.RIGHT, 6),
+		FRONT_CLIMB(Joysticks.RIGHT, 5),
+		BACK_CLIMB(Joysticks.RIGHT, 3);
 
 		private int buttonNumber;
 		private Joysticks joystick;
