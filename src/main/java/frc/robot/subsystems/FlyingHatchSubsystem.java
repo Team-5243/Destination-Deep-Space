@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 
-public class TridentSubsystem extends Subsystem {
+public class FlyingHatchSubsystem extends Subsystem {
 
     //Includes Cargo and Hatch Mechanisms (Flywheels, Pistons, Compressor)
 
@@ -23,7 +23,7 @@ public class TridentSubsystem extends Subsystem {
     public DoubleSolenoid hatchTopPiston, hatchBottomPiston;
     private Compressor compressor;
 
-    public TridentSubsystem() {
+    public FlyingHatchSubsystem() {
         leftFlywheels = new WPI_TalonSRX(RobotMap.Trident.LEFT_FLYWHEELS.get());
         rightFlywheels = new WPI_TalonSRX(RobotMap.Trident.RIGHT_FLYWHEELS.get());
 
@@ -59,16 +59,8 @@ public class TridentSubsystem extends Subsystem {
         }
     }
 
-    public void extendPiston(){
-        hatchTopPiston.set(Value.kForward);
-    }
-
-    public void retractPiston(){
-        hatchTopPiston.set(Value.kReverse);
-    }
-
     public String getTopPiston(){
-        return hatchTopPiston.get() == Value.kForward ? "forward" : hatchTopPiston.get() == Value.kReverse ? "reverse" : "off";
+        return hatchTopPiston.get() == Value.kForward ? "Forward" : hatchTopPiston.get() == Value.kReverse ? "Reverse" : "Off";
     }
 
     public void setClosedLoopControl(boolean on) {
