@@ -9,34 +9,35 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.FlyingHatchSubsystem;
+import frc.robot.RobotMap;
+import frc.robot.subsystems.VisionSubsystem;
 
-public class ToggleHatchPiston extends Command {
+public class ToggleCamMode extends Command {
+
+  VisionSubsystem vision;
   
-  FlyingHatchSubsystem trident;
-
-  public ToggleHatchPiston() {
+  public ToggleCamMode() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    trident = Robot.m_flyhatch;
-    requires(trident);
+    vision = Robot.m_vision;
+    requires(vision);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    //vision.setCamMode(++RobotMap.Vision.DEFAULT_CAM_MODE.get() % 2);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    trident.toggleHatchPiston();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;
+    return false;
   }
 
   // Called once after isFinished returns true

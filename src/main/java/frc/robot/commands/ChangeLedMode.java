@@ -9,28 +9,30 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.FlyingHatchSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
-public class ToggleHatchPiston extends Command {
+public class ChangeLedMode extends Command {
+
+  VisionSubsystem vision;
+  int mode;
   
-  FlyingHatchSubsystem trident;
-
-  public ToggleHatchPiston() {
+  public ChangeLedMode(int mode) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    trident = Robot.m_flyhatch;
-    requires(trident);
+    vision = Robot.m_vision;
+    requires(vision);
+    this.mode = mode;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    vision.setLed(mode);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    trident.toggleHatchPiston();
   }
 
   // Make this return true when this Command no longer needs to run execute()

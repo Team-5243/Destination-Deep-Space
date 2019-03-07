@@ -19,7 +19,7 @@ import frc.robot.commands.TankDrive;
 
 public class DriveSubsystem extends Subsystem {
 
-    //Includes Chassis and Potential Piston Wheels
+    //Includes Chassis and Vision Alignment
 
     WPI_TalonSRX fr, fl, br, bl;
     //SpeedControllerGroup left, right;
