@@ -20,7 +20,7 @@ public class FlyingHatchSubsystem extends Subsystem {
     //Includes Cargo and Hatch Mechanisms (Flywheels, Pistons, Compressor)
 
     private WPI_TalonSRX leftFlywheels, rightFlywheels;
-    public DoubleSolenoid hatchTopPiston, hatchBottomPiston;
+    private DoubleSolenoid hatchTopPiston, hatchBottomPiston;
     private Compressor compressor;
 
     public FlyingHatchSubsystem() {
@@ -28,7 +28,8 @@ public class FlyingHatchSubsystem extends Subsystem {
         rightFlywheels = new WPI_TalonSRX(RobotMap.Trident.RIGHT_FLYWHEELS.get());
 
         hatchTopPiston = new DoubleSolenoid(RobotMap.Trident.HATCH_TOP_PISTON_F.get(), RobotMap.Trident.HATCH_TOP_PISTON_R.get());
-        //hatchBottomPiston = new DoubleSolenoid(RobotMap.Trident.HATCH_DOWN_PISTON_F.get(), RobotMap.Trident.HATCH_DOWN_PISTON_R.get());
+        hatchBottomPiston = new DoubleSolenoid(RobotMap.Trident.HATCH_DOWN_PISTON_F.get(), RobotMap.Trident.HATCH_DOWN_PISTON_R.get());
+
         try{
             compressor = new Compressor();
             compressor.start();
@@ -49,13 +50,17 @@ public class FlyingHatchSubsystem extends Subsystem {
         leftFlywheels.set(0);
     }
 
+    public void neutralFlywheels(){
+        leftFlywheels.set(-.3d);
+    }
+
     public void toggleHatchPiston() {
 		if (hatchTopPiston.get().equals(Value.kReverse) || hatchTopPiston.get().equals(Value.kOff)) {
             hatchTopPiston.set(Value.kForward);
-            //hatchBottomPiston.set(Value.kForward);
+            hatchBottomPiston.set(Value.kForward);
 		} else {
             hatchTopPiston.set(Value.kReverse);
-            //hatchBottomPiston.set(Value.kReverse);
+            hatchBottomPiston.set(Value.kReverse);
         }
     }
 
@@ -79,4 +84,7 @@ public class FlyingHatchSubsystem extends Subsystem {
     @Override
     public void initDefaultCommand() {
     }
+
+
+
 }

@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -71,7 +72,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     //System.out.println("Encoder value: " + m_lift_pid.getDistance());
-    //System.out.println(m_trident.hatchTopPiston.getName());
   }
 
   /**

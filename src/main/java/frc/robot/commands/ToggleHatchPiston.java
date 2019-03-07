@@ -31,8 +31,6 @@ public class ToggleHatchPiston extends Command {
   @Override
   protected void execute() {
     trident.toggleHatchPiston();
-
-    System.out.println("Toggle piston");
   }
 
   // Make this return true when this Command no longer needs to run execute()

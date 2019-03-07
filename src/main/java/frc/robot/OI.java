@@ -7,21 +7,21 @@
 
 package frc.robot;
 
+import static frc.robot.RobotMap.Buttons.*;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.RobotMap.Buttons;
 import frc.robot.RobotMap.Joysticks;
-import frc.robot.RobotMap.LiftModes;
+import frc.robot.commands.ChangeLedMode;
 import frc.robot.commands.FlywheelsCommand;
-import frc.robot.commands.LiftCommand;
 import frc.robot.commands.LiftLowerCommand;
 import frc.robot.commands.LiftRaiseCommand;
 import frc.robot.commands.ToggleClimbPistons;
 //import frc.robot.commands.PivotCommand;
 import frc.robot.commands.ToggleHatchPiston;
-//import frc.robot.commands.PivotCommand;
 import frc.robot.commands.VisionAlignCommand;
-import static frc.robot.RobotMap.Buttons.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -29,6 +29,7 @@ import static frc.robot.RobotMap.Buttons.*;
  */
 public class OI {
     //private JoystickButton b_intake, b_outtake, b_raise, b_lower, b_piston, b_align; /* b_pDown, b_pUp, */ 
+    private int visionModeValue = 1;
     public OI() {
         Joysticks.LEFT.setJoystick(new Joystick(0));
         Joysticks.RIGHT.setJoystick(new Joystick(1));
@@ -36,7 +37,7 @@ public class OI {
         /*
         Left Joystick:
             Trigger: Flywheels Intake
-			Button 3: Pivot Up 	 | Button 4: Pivot Down
+			Button 3: Pivot Up 	 | Button 4: Pivot Down (Not in used)
             Button 5: Raise Lift | Button 6: Lower Lift
         
         Right Joystick:
@@ -44,17 +45,22 @@ public class OI {
             Button 4: Hatch Pistons
             Button 6: Vision Align
             Button 5: Front Climb | Button 3: Back Climb
+
+            Button 2: Toggle Cam Mode
+            Button 10: Led Off | Button 11: Led Blink | Button 12: Led On
 		*/
 
         for(Buttons button : Buttons.values()) {
-            button.setJoystickButton(new JoystickButton(button.getJoystick().get(), button.getButton()));
+            button.setJoystickButton(new JoystickButton(
+                button.getJoystick().get(),
+                button.getButton()
+            ));
         }
 
         FLYWHEEL_INTAKE.getJoystickButton().whileHeld(new FlywheelsCommand(true));
         FLYWHEEL_OUTTAKE.getJoystickButton().whileHeld(new FlywheelsCommand(false));
 
         HATCH_PISTON.getJoystickButton().whenPressed(new ToggleHatchPiston());
-        //HATCH_PISTON_RETRACT.getJoystickButton().whenPressed(new RetractPiston());
         VISION_ALIGN.getJoystickButton().whenPressed(new VisionAlignCommand());
 
         FRONT_CLIMB.getJoystickButton().whenPressed(new ToggleClimbPistons(true));
@@ -70,10 +76,22 @@ public class OI {
 
         // LIFT_RAISE.getJoystickButton().whenInactive(new LiftCommand(LiftModes.SUSPEND));
         // LIFT_LOWER.getJoystickButton().whenInactive(new LiftCommand(LiftModes.SUSPEND));
+
+        LED_ON.getJoystickButton().whenPressed(new ChangeLedMode(RobotMap.Vision.ON.get()));
+        LED_BLINK.getJoystickButton().whenPressed(new ChangeLedMode(RobotMap.Vision.BLINK.get()));
+        LED_OFF.getJoystickButton().whenPressed(new ChangeLedMode(RobotMap.Vision.OFF.get()));
+
+        CAM_MODE.getJoystickButton().whenPressed(new Command(){
+            @Override
+            protected boolean isFinished() {
+                Robot.m_vision.setCamMode(++visionModeValue % 2);
+                return true;
+            }
+        });
     }
 
     public boolean getRaise() {
-        return getLeft().getRawButtonPressed(5);
+        return getRight().getRawButtonPressed(5);
     }
 
     public boolean getLower() {

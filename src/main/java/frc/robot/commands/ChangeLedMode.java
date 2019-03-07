@@ -9,48 +9,46 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
-public class VisionAlignCommand extends Command {
+public class ChangeLedMode extends Command {
+
+  VisionSubsystem vision;
+  int mode;
   
-  DriveSubsystem drive;
-  
-  public VisionAlignCommand() {
+  public ChangeLedMode(int mode) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    drive = Robot.m_drivetrain;
-    requires(drive);
+    vision = Robot.m_vision;
+    requires(vision);
+    this.mode = mode;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    drive.initialAlign = false;
-    drive.close = false;
+    vision.setLed(mode);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    drive.alignStraight();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return drive.isFinishedAlign();
+    return true;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    drive.stopDrive();;
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    drive.stopDrive();;
   }
 }

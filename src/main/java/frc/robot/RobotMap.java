@@ -103,18 +103,38 @@ public class RobotMap {
 		}
 	}
 
+	public static enum Vision {
+		DEFAULT_CAM_MODE(1), //Default: Driver Control
+		OFF(1),
+		BLINK(2),
+		ON(3);
+
+		private int mode;
+
+		private Vision(int mode){
+			this.mode = mode;
+		}
+
+		public int get(){
+			return mode;
+		}
+	}
+
 	public static enum Buttons {
 		/*
         Left Joystick:
             Trigger: Flywheels Intake
-			Button 3: Pivot Up 	 | Button 4: Pivot Down
+			Button 3: Pivot Up 	 | Button 4: Pivot Down (Not in used)
             Button 5: Raise Lift | Button 6: Lower Lift
         
         Right Joystick:
             Trigger: Flywheels Outtake
-            Button 4: Pistons for Hatch
-			Button 6: Vision Align
-			Button 5: Front Climb | Button 3: Back Climb
+            Button 4: Hatch Pistons
+            Button 6: Vision Align
+            Button 5: Front Climb | Button 3: Back Climb
+
+            Button 2: Toggle Cam Mode
+            Button 10: Led Off | Button 11: Led Blink | Button 12: Led On
 		*/
 
 		FLYWHEEL_INTAKE(Joysticks.LEFT, 1),
@@ -127,7 +147,12 @@ public class RobotMap {
 		HATCH_PISTON(Joysticks.RIGHT, 4),
 		VISION_ALIGN(Joysticks.RIGHT, 6),
 		FRONT_CLIMB(Joysticks.RIGHT, 5),
-		BACK_CLIMB(Joysticks.RIGHT, 3);
+		BACK_CLIMB(Joysticks.RIGHT, 3),
+
+		CAM_MODE(Joysticks.RIGHT, 2),
+		LED_OFF(Joysticks.RIGHT, 10),
+		LED_BLINK(Joysticks.RIGHT, 11),
+		LED_ON(Joysticks.RIGHT, 12);
 
 		private int buttonNumber;
 		private Joysticks joystick;

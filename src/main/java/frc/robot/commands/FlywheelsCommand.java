@@ -43,13 +43,15 @@ public class FlywheelsCommand extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        flywheels.stopFlywheels();
+        if(intake)  flywheels.neutralFlywheels();
+        else        flywheels.stopFlywheels();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        flywheels.stopFlywheels();
+        if(intake)  flywheels.neutralFlywheels();
+        else        flywheels.stopFlywheels();
     }
 }

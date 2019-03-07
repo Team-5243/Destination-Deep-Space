@@ -19,34 +19,35 @@ public class ClimbSubsystem extends Subsystem {
   DoubleSolenoid frontRightClimb, frontLeftClimb, backLeftClimb, backRightClimb;
   
   public ClimbSubsystem() {
-    frontRightClimb = new DoubleSolenoid(RobotMap.Climb.FRONT_RIGHT.getForward(), RobotMap.Climb.FRONT_RIGHT.getReverse());
-    frontLeftClimb = new DoubleSolenoid(RobotMap.Climb.FRONT_LEFT.getForward(), RobotMap.Climb.FRONT_LEFT.getReverse());
-    backLeftClimb = new DoubleSolenoid(RobotMap.Climb.BACK_LEFT.getForward(), RobotMap.Climb.BACK_LEFT.getReverse());
-    backRightClimb = new DoubleSolenoid(RobotMap.Climb.BACK_RIGHT.getForward(), RobotMap.Climb.BACK_RIGHT.getReverse());
+    // frontRightClimb = new DoubleSolenoid(RobotMap.Climb.FRONT_RIGHT.getForward(), RobotMap.Climb.FRONT_RIGHT.getReverse());
+    // frontLeftClimb = new DoubleSolenoid(RobotMap.Climb.FRONT_LEFT.getForward(), RobotMap.Climb.FRONT_LEFT.getReverse());
+    // backLeftClimb = new DoubleSolenoid(RobotMap.Climb.BACK_LEFT.getForward(), RobotMap.Climb.BACK_LEFT.getReverse());
+    // backRightClimb = new DoubleSolenoid(RobotMap.Climb.BACK_RIGHT.getForward(), RobotMap.Climb.BACK_RIGHT.getReverse());
   }
 
   public void toggleFrontClimb(){
-    if (frontLeftClimb.get().equals(Value.kReverse) || frontLeftClimb.get().equals(Value.kOff)) {
-      frontLeftClimb.set(Value.kForward);
-      frontRightClimb.set(Value.kForward);
-    } else {
-      frontLeftClimb.set(Value.kReverse);
-      frontRightClimb.set(Value.kReverse);
-    }
+    // if (frontLeftClimb.get().equals(Value.kReverse) || frontLeftClimb.get().equals(Value.kOff)) {
+    //   frontLeftClimb.set(Value.kForward);
+    //   frontRightClimb.set(Value.kForward);
+    // } else {
+    //   frontLeftClimb.set(Value.kReverse);
+    //   frontRightClimb.set(Value.kReverse);
+    // }
   }
 
   public void toggleBackClimb(){
-    if (backLeftClimb.get().equals(Value.kReverse) || backLeftClimb.get().equals(Value.kOff)) {
-      backLeftClimb.set(Value.kForward);
-      backRightClimb.set(Value.kForward);
-    } else {
-      backLeftClimb.set(Value.kReverse);
-      backRightClimb.set(Value.kReverse);
-    }
+    // if (backLeftClimb.get().equals(Value.kReverse) || backLeftClimb.get().equals(Value.kOff)) {
+    //   backLeftClimb.set(Value.kForward);
+    //   backRightClimb.set(Value.kForward);
+    // } else {
+    //   backLeftClimb.set(Value.kReverse);
+    //   backRightClimb.set(Value.kReverse);
+    // }
   }
 
   public String getFrontLeftPiston(){
-    return frontLeftClimb.get() == Value.kForward ? "Forward" : frontLeftClimb.get() == Value.kReverse ? "Reverse" : "Off";
+    //return frontLeftClimb.get() == Value.kForward ? "Forward" : frontLeftClimb.get() == Value.kReverse ? "Reverse" : "Off";
+    return "";
   }
 
   @Override
