@@ -37,7 +37,7 @@ public class OI {
         /*
         Left Joystick:
             Trigger: Flywheels Intake
-			Button 3: Pivot Up 	 | Button 4: Pivot Down (Not in used)
+            Button 3: Pivot Up 	 | Button 4: Pivot Down (Not in used)
             Button 5: Raise Lift | Button 6: Lower Lift
         
         Right Joystick:

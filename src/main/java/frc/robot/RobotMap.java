@@ -35,20 +35,20 @@ public class RobotMap {
 		}
 	}	
 
-	public static enum Trident {
+	public static enum FlyHatch {
 		//Trident
 		LEFT_FLYWHEELS(7),
 		RIGHT_FLYWHEELS(6),
 
 		//Hatch DoubleSolenoid (placeholder)
-		HATCH_TOP_PISTON_F(4),
-		HATCH_TOP_PISTON_R(5),
-		HATCH_DOWN_PISTON_F(3),
-		HATCH_DOWN_PISTON_R(2);
+		HATCH_TOP_PISTON_F(3),
+		HATCH_TOP_PISTON_R(2);
+		// HATCH_DOWN_PISTON_F(3),
+		// HATCH_DOWN_PISTON_R(2);
 
 		private int port;
 		
-		private Trident(int port) {
+		private FlyHatch(int port) {
 			this.port = port;
 		}
 

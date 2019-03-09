@@ -24,11 +24,11 @@ public class FlyingHatchSubsystem extends Subsystem {
     private Compressor compressor;
 
     public FlyingHatchSubsystem() {
-        leftFlywheels = new WPI_TalonSRX(RobotMap.Trident.LEFT_FLYWHEELS.get());
-        rightFlywheels = new WPI_TalonSRX(RobotMap.Trident.RIGHT_FLYWHEELS.get());
+        leftFlywheels = new WPI_TalonSRX(RobotMap.FlyHatch.LEFT_FLYWHEELS.get());
+        rightFlywheels = new WPI_TalonSRX(RobotMap.FlyHatch.RIGHT_FLYWHEELS.get());
 
-        hatchTopPiston = new DoubleSolenoid(RobotMap.Trident.HATCH_TOP_PISTON_F.get(), RobotMap.Trident.HATCH_TOP_PISTON_R.get());
-        hatchBottomPiston = new DoubleSolenoid(RobotMap.Trident.HATCH_DOWN_PISTON_F.get(), RobotMap.Trident.HATCH_DOWN_PISTON_R.get());
+        hatchTopPiston = new DoubleSolenoid(RobotMap.FlyHatch.HATCH_TOP_PISTON_F.get(), RobotMap.FlyHatch.HATCH_TOP_PISTON_R.get());
+        // hatchBottomPiston = new DoubleSolenoid(RobotMap.FlyHatch.HATCH_DOWN_PISTON_F.get(), RobotMap.FlyHatch.HATCH_DOWN_PISTON_R.get());
 
         try{
             compressor = new Compressor();
@@ -57,10 +57,10 @@ public class FlyingHatchSubsystem extends Subsystem {
     public void toggleHatchPiston() {
 		if (hatchTopPiston.get().equals(Value.kReverse) || hatchTopPiston.get().equals(Value.kOff)) {
             hatchTopPiston.set(Value.kForward);
-            hatchBottomPiston.set(Value.kForward);
+            // hatchBottomPiston.set(Value.kForward);
 		} else {
             hatchTopPiston.set(Value.kReverse);
-            hatchBottomPiston.set(Value.kReverse);
+            // hatchBottomPiston.set(Value.kReverse);
         }
     }
 
