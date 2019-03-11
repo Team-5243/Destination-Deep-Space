@@ -42,7 +42,9 @@ public class RobotMap {
 
 		//Hatch DoubleSolenoid (placeholder)
 		HATCH_TOP_PISTON_F(3),
-		HATCH_TOP_PISTON_R(2);
+		HATCH_TOP_PISTON_R(2),
+		MIDDLE_PISTON_F(4),
+		MIDDLE_PISTON_R(5);
 		// HATCH_DOWN_PISTON_F(3),
 		// HATCH_DOWN_PISTON_R(2);
 
@@ -104,7 +106,6 @@ public class RobotMap {
 	}
 
 	public static enum Vision {
-		DEFAULT_CAM_MODE(1), //Default: Driver Control
 		OFF(1),
 		BLINK(2),
 		ON(3);
@@ -138,8 +139,7 @@ public class RobotMap {
 		*/
 
 		FLYWHEEL_INTAKE(Joysticks.LEFT, 1),
-		//PIVOT_UP(Joysticks.LEFT, 3),
-		//PIVOT_DOWN(Joysticks.LEFT, 4),
+		RETRACT_ALL(Joysticks.LEFT, 4),
 		LIFT_RAISE(Joysticks.LEFT, 5),
 		LIFT_LOWER(Joysticks.LEFT, 6),
 		

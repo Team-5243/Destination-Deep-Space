@@ -20,16 +20,16 @@ public class FlyingHatchSubsystem extends Subsystem {
     //Includes Cargo and Hatch Mechanisms (Flywheels, Pistons, Compressor)
 
     private WPI_TalonSRX leftFlywheels, rightFlywheels;
-    private DoubleSolenoid hatchTopPiston, hatchBottomPiston;
+    private DoubleSolenoid hatchPiston, middlePiston;
     private Compressor compressor;
 
     public FlyingHatchSubsystem() {
         leftFlywheels = new WPI_TalonSRX(RobotMap.FlyHatch.LEFT_FLYWHEELS.get());
         rightFlywheels = new WPI_TalonSRX(RobotMap.FlyHatch.RIGHT_FLYWHEELS.get());
 
-        hatchTopPiston = new DoubleSolenoid(RobotMap.FlyHatch.HATCH_TOP_PISTON_F.get(), RobotMap.FlyHatch.HATCH_TOP_PISTON_R.get());
+        hatchPiston = new DoubleSolenoid(RobotMap.FlyHatch.HATCH_TOP_PISTON_F.get(), RobotMap.FlyHatch.HATCH_TOP_PISTON_R.get());
         // hatchBottomPiston = new DoubleSolenoid(RobotMap.FlyHatch.HATCH_DOWN_PISTON_F.get(), RobotMap.FlyHatch.HATCH_DOWN_PISTON_R.get());
-
+        middlePiston = new DoubleSolenoid(RobotMap.FlyHatch.MIDDLE_PISTON_F.get(), RobotMap.FlyHatch.MIDDLE_PISTON_R.get());
         try{
             compressor = new Compressor();
             compressor.start();
@@ -38,8 +38,15 @@ public class FlyingHatchSubsystem extends Subsystem {
         }
 
         rightFlywheels.follow(leftFlywheels);
-
         leftFlywheels.setInverted(true);
+
+        hatchPiston.set(Value.kForward);
+        middlePiston.set(Value.kReverse);
+    }
+
+    public void retractAll() {
+        hatchPiston.set(Value.kForward);
+        middlePiston.set(Value.kReverse);
     }
 
     public void spinyBois(boolean intake) {
@@ -55,24 +62,26 @@ public class FlyingHatchSubsystem extends Subsystem {
     }
 
     public void toggleHatchPiston() {
-		if (hatchTopPiston.get().equals(Value.kReverse) || hatchTopPiston.get().equals(Value.kOff)) {
-            hatchTopPiston.set(Value.kForward);
+		if (hatchPiston.get().equals(Value.kReverse) || hatchPiston.get().equals(Value.kOff)) {
+            hatchPiston.set(Value.kForward);
+            middlePiston.set(Value.kForward);
             // hatchBottomPiston.set(Value.kForward);
 		} else {
-            hatchTopPiston.set(Value.kReverse);
+            hatchPiston.set(Value.kReverse);
+            middlePiston.set(Value.kReverse);
             // hatchBottomPiston.set(Value.kReverse);
         }
     }
 
     public String getTopPiston(){
-        return hatchTopPiston.get() == Value.kForward ? "Forward" : hatchTopPiston.get() == Value.kReverse ? "Reverse" : "Off";
+        return hatchPiston.get() == Value.kForward ? "Forward" : hatchPiston.get() == Value.kReverse ? "Reverse" : "Off";
     }
 
     public void setClosedLoopControl(boolean on) {
 		if (compressor != null)
 			compressor.setClosedLoopControl(on);
 	}
-	
+	                                                                                                                                                     
 	public void disableCompressor() {
 		compressor.stop();
     }
@@ -80,7 +89,7 @@ public class FlyingHatchSubsystem extends Subsystem {
 	public boolean compressorEnabled() {
 		return compressor.enabled();
 	}
-
+    
     @Override
     public void initDefaultCommand() {
     }

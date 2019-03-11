@@ -7,11 +7,8 @@
 
 package frc.robot;
 
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -30,15 +27,15 @@ import frc.robot.subsystems.VisionSubsystem;
  */
 public class Robot extends TimedRobot {
   public static OI m_oi;
-  public static VisionSubsystem m_vision = new VisionSubsystem();
+  public static VisionSubsystem m_vision = new VisionSubsystem(); //Parth, Noli tenere (don't touch). It makes us unable to deploy - Rudo
+                                                                  //Rudo, I know what that means. Don't tell me what to do - Parth
+                                                                  //Quack - Thai
+                                                                  //Only on Tuesdays, Thai! - Jason
   public static DriveSubsystem m_drivetrain = new DriveSubsystem();
   public static FlyingHatchSubsystem m_flyhatch = new FlyingHatchSubsystem();
   public static ClimbSubsystem m_climb = new ClimbSubsystem();
   public static LiftSubsystem m_lift = new LiftSubsystem();
   public static PIDLiftSubsystem m_lift_pid = new PIDLiftSubsystem(1d, 1d, 1d, 0d, -.5, .5, false);
-
-  Command m_autonomousCommand;
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   /**
    * This function is run when the robot is first started up and should be
@@ -47,8 +44,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
-    // chooser.addOption("My Auto", new MyAutoCommand());
-    //SmartDashboard.putData("Auto mode", m_chooser);
     //m_lift.resetEncoder();
     //m_lift_pid.resetEncoder();
     updateSmartDashboard();
@@ -102,19 +97,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_chooser.getSelected();
-
-    /*
-     * String autoSelected = SmartDashboard.getString("Auto Selector",
-     * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-     * = new MyAutoCommand(); break; case "Default Auto": default:
-     * autonomousCommand = new ExampleCommand(); break; }
-     */
-
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.start();
-    }
   }
 
   /**
@@ -131,9 +113,9 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
-    }
+    m_flyhatch.retractAll();
+    m_vision.setCamMode(1); //testing Cam sets to Driver Mode and Turn Off LED
+    m_vision.setLed(1);
   }
 
   /**
