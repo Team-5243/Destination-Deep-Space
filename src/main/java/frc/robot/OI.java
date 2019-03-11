@@ -7,10 +7,31 @@
 
 package frc.robot;
 
+import static frc.robot.RobotMap.Buttons.BACK_CLIMB;
+import static frc.robot.RobotMap.Buttons.CAM_MODE;
+import static frc.robot.RobotMap.Buttons.FLYWHEEL_INTAKE;
+import static frc.robot.RobotMap.Buttons.FLYWHEEL_OUTTAKE;
+import static frc.robot.RobotMap.Buttons.FRONT_CLIMB;
+import static frc.robot.RobotMap.Buttons.HATCH_PISTON;
+import static frc.robot.RobotMap.Buttons.LED_BLINK;
+import static frc.robot.RobotMap.Buttons.LED_OFF;
+import static frc.robot.RobotMap.Buttons.LED_ON;
+import static frc.robot.RobotMap.Buttons.LIFT_LOWER;
+import static frc.robot.RobotMap.Buttons.LIFT_RAISE;
+import static frc.robot.RobotMap.Buttons.RETRACT_ALL;
+import static frc.robot.RobotMap.Buttons.VISION_ALIGN;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.RobotMap.Buttons;
+import frc.robot.RobotMap.Joysticks;
+import frc.robot.commands.ChangeLedMode;
 import frc.robot.commands.FlywheelsCommand;
-import frc.robot.commands.LiftCommand;
+import frc.robot.commands.LiftLowerCommand;
+import frc.robot.commands.LiftRaiseCommand;
+import frc.robot.commands.RetractAll;
+import frc.robot.commands.ToggleClimbPistons;
 //import frc.robot.commands.PivotCommand;
 import frc.robot.commands.ToggleHatchPiston;
 import frc.robot.commands.VisionAlignCommand;
@@ -20,65 +41,88 @@ import frc.robot.commands.VisionAlignCommand;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-
-    private Joystick left, right;
-    private JoystickButton b_intake, b_outtake, b_raise, b_lower, b_piston, b_align; /* b_pDown, b_pUp, */ 
+    //private JoystickButton b_intake, b_outtake, b_raise, b_lower, b_piston, b_align; /* b_pDown, b_pUp, */ 
+    private int visionModeValue = 1;
     public OI() {
-        left = new Joystick(0);
-        right = new Joystick(1);
+        Joysticks.LEFT.setJoystick(new Joystick(0));
+        Joysticks.RIGHT.setJoystick(new Joystick(1));
 
         /*
         Left Joystick:
             Trigger: Flywheels Intake
-            Button 3 & 4: Pivot
-            Button 5 & 6: Lift
+            Button 4: Retract all pistons
+            Button 5: Raise Lift | Button 6: Lower Lift
         
         Right Joystick:
             Trigger: Flywheels Outtake
-            Button 4: Double Solenoid for Hatch
-            Button 5: Cancel Vision Align
+            Button 4: Hatch Pistons
             Button 6: Vision Align
-        */
+            Button 5: Front Climb | Button 3: Back Climb
 
-        b_intake = new JoystickButton(left, 1);
-        b_outtake = new JoystickButton(right, 1);
+            Button 2: Toggle Cam Mode
+            Button 10: Led Off | Button 11: Led Blink | Button 12: Led On
+		*/
 
-        b_raise = new JoystickButton(left, 5);
-        b_lower = new JoystickButton(left, 6);
+        for(Buttons button : Buttons.values()) {
+            button.setJoystickButton(new JoystickButton(
+                button.getJoystick().get(),
+                button.getButton()
+            ));
+        }
 
-        //b_pDown = new JoystickButton(left, 3);
-        //b_pUp = new JoystickButton(left, 4);
+        FLYWHEEL_INTAKE.getJoystickButton().whileHeld(new FlywheelsCommand(true));
+        FLYWHEEL_OUTTAKE.getJoystickButton().whileHeld(new FlywheelsCommand(false));
 
-        b_piston = new JoystickButton(right, 4);
+        HATCH_PISTON.getJoystickButton().whenPressed(new ToggleHatchPiston());
+        RETRACT_ALL.getJoystickButton().whenPressed(new RetractAll());
+        VISION_ALIGN.getJoystickButton().whenPressed(new VisionAlignCommand());
 
-        b_align = new JoystickButton(right, 6);
+        FRONT_CLIMB.getJoystickButton().whenPressed(new ToggleClimbPistons(true));
+        BACK_CLIMB.getJoystickButton().whenPressed(new ToggleClimbPistons(false));
 
-        b_intake.whileHeld(new FlywheelsCommand(true));
-        b_outtake.whileHeld(new FlywheelsCommand(false));
+        LIFT_RAISE.getJoystickButton().whileHeld(new LiftRaiseCommand());
+        LIFT_LOWER.getJoystickButton().whileHeld(new LiftLowerCommand());
+        //LIFT_RAISE.getJoystickButton().whileHeld(new LiftCommand(LiftModes.RAISE));
+        //LIFT_LOWER.getJoystickButton().whileHeld(new LiftCommand(LiftModes.LOWER));
 
-        b_raise.whileHeld(new LiftCommand(true)); 
-        b_lower.whileHeld(new LiftCommand(false));
+        // LIFT_RAISE.getJoystickButton().whenReleased(new LiftCommand(LiftModes.JUST_SUSPENDED));
+        // LIFT_LOWER.getJoystickButton().whenReleased(new LiftCommand(LiftModes.JUST_SUSPENDED));
 
-        //b_pUp.whileHeld(new PivotCommand(true));
-        //b_pDown.whileHeld(new PivotCommand(false));
+        // LIFT_RAISE.getJoystickButton().whenInactive(new LiftCommand(LiftModes.SUSPEND));
+        // LIFT_LOWER.getJoystickButton().whenInactive(new LiftCommand(LiftModes.SUSPEND));
 
-        b_piston.whenPressed(new ToggleHatchPiston());
+        LED_ON.getJoystickButton().whenPressed(new ChangeLedMode(RobotMap.Vision.ON.get()));
+        LED_BLINK.getJoystickButton().whenPressed(new ChangeLedMode(RobotMap.Vision.BLINK.get()));
+        LED_OFF.getJoystickButton().whenPressed(new ChangeLedMode(RobotMap.Vision.OFF.get()));
 
-        b_align.whenPressed(new VisionAlignCommand());
+        CAM_MODE.getJoystickButton().whenPressed(new Command(){
+            @Override
+            protected boolean isFinished() {
+                Robot.m_vision.setCamMode(++visionModeValue % 2);
+                return true;
+            }
+        });
+    }
+
+    public boolean getRaise() {
+        return getRight().getRawButtonPressed(5);
+    }
+
+    public boolean getLower() {
+        return getLeft().getRawButtonPressed(6);
     }
 
     public Joystick getLeft() {
-        return left;
+        return Joysticks.LEFT.get();
     }
 
     public Joystick getRight() {
-        return right;
+        return Joysticks.RIGHT.get();
     }
 
-    //Right button #5 also cancels the auto alignment
     public boolean isJoysticksNeutral(){
-        return Math.abs(left.getY()) < 0.1 && Math.abs(left.getX()) < 0.1 &&
-                Math.abs(right.getY()) < 0.1 && Math.abs(right.getX()) < 0.1 && !right.getRawButton(5);
+        return Math.abs(getLeft().getY()) < 0.1 && Math.abs(getLeft().getX()) < 0.1 &&
+                Math.abs(getRight().getY()) < 0.1 && Math.abs(getRight().getX()) < 0.1;
     }
 
 }

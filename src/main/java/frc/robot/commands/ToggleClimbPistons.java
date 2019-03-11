@@ -9,59 +9,47 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.subsystems.ClimbSubsystem;
 
-public class VisionAlignCommand extends Command {
-  
-  DriveSubsystem drive;
-  VisionSubsystem vision;
-  
-  public VisionAlignCommand() {
+public class ToggleClimbPistons extends Command {
+
+  ClimbSubsystem climb;
+  boolean isFront;
+
+  public ToggleClimbPistons(boolean isFront) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    drive = Robot.m_drivetrain;
-    vision = Robot.m_vision;
-    requires(drive);
-    requires(vision);
+    climb = Robot.m_climb;
+    requires(climb);
+    this.isFront = isFront;
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() { 
-    drive.initialAlign = false;
-    drive.close = false;
-
-    vision.setCamMode(0);
-    vision.setLed(3);
+  protected void initialize() {
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    drive.alignStraight();
+    if(isFront) climb.toggleFrontClimb();
+    else        climb.toggleBackClimb();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return drive.isFinishedAlign();
+    return true;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    drive.stopDrive();
-    vision.setCamMode(1);
-    vision.setLed(1);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    drive.stopDrive();
-    vision.setCamMode(1);
-    vision.setLed(1);
   }
 }

@@ -15,20 +15,21 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 
-public class TridentSubsystem extends Subsystem {
+public class FlyingHatchSubsystem extends Subsystem {
 
     //Includes Cargo and Hatch Mechanisms (Flywheels, Pistons, Compressor)
 
     private WPI_TalonSRX leftFlywheels, rightFlywheels;
-    private DoubleSolenoid hatchPiston;
+    private DoubleSolenoid hatchPiston, middlePiston;
     private Compressor compressor;
 
-    public TridentSubsystem() {
-        leftFlywheels = new WPI_TalonSRX(RobotMap.Trident.LEFT_FLYWHEELS.get());
-        rightFlywheels = new WPI_TalonSRX(RobotMap.Trident.RIGHT_FLYWHEELS.get());
+    public FlyingHatchSubsystem() {
+        leftFlywheels = new WPI_TalonSRX(RobotMap.FlyHatch.LEFT_FLYWHEELS.get());
+        rightFlywheels = new WPI_TalonSRX(RobotMap.FlyHatch.RIGHT_FLYWHEELS.get());
 
-        hatchPiston = new DoubleSolenoid(RobotMap.Trident.HATCH_PISTON_F.get(), RobotMap.Trident.HATCH_PISTON_R.get());
-
+        hatchPiston = new DoubleSolenoid(RobotMap.FlyHatch.HATCH_TOP_PISTON_F.get(), RobotMap.FlyHatch.HATCH_TOP_PISTON_R.get());
+        // hatchBottomPiston = new DoubleSolenoid(RobotMap.FlyHatch.HATCH_DOWN_PISTON_F.get(), RobotMap.FlyHatch.HATCH_DOWN_PISTON_R.get());
+        middlePiston = new DoubleSolenoid(RobotMap.FlyHatch.MIDDLE_PISTON_F.get(), RobotMap.FlyHatch.MIDDLE_PISTON_R.get());
         try{
             compressor = new Compressor();
             compressor.start();
@@ -37,8 +38,15 @@ public class TridentSubsystem extends Subsystem {
         }
 
         rightFlywheels.follow(leftFlywheels);
-
         leftFlywheels.setInverted(true);
+
+        hatchPiston.set(Value.kForward);
+        middlePiston.set(Value.kReverse);
+    }
+
+    public void retractAll() {
+        hatchPiston.set(Value.kForward);
+        middlePiston.set(Value.kReverse);
     }
 
     public void spinyBois(boolean intake) {
@@ -49,19 +57,31 @@ public class TridentSubsystem extends Subsystem {
         leftFlywheels.set(0);
     }
 
+    public void neutralFlywheels(){
+        leftFlywheels.set(-.3d);
+    }
+
     public void toggleHatchPiston() {
 		if (hatchPiston.get().equals(Value.kReverse) || hatchPiston.get().equals(Value.kOff)) {
-			hatchPiston.set(Value.kForward);
+            hatchPiston.set(Value.kForward);
+            middlePiston.set(Value.kForward);
+            // hatchBottomPiston.set(Value.kForward);
 		} else {
-			hatchPiston.set(Value.kReverse);
+            hatchPiston.set(Value.kReverse);
+            middlePiston.set(Value.kReverse);
+            // hatchBottomPiston.set(Value.kReverse);
         }
+    }
+
+    public String getTopPiston(){
+        return hatchPiston.get() == Value.kForward ? "Forward" : hatchPiston.get() == Value.kReverse ? "Reverse" : "Off";
     }
 
     public void setClosedLoopControl(boolean on) {
 		if (compressor != null)
 			compressor.setClosedLoopControl(on);
 	}
-	
+	                                                                                                                                                     
 	public void disableCompressor() {
 		compressor.stop();
     }
@@ -69,7 +89,7 @@ public class TridentSubsystem extends Subsystem {
 	public boolean compressorEnabled() {
 		return compressor.enabled();
 	}
-
+    
     @Override
     public void initDefaultCommand() {
     }

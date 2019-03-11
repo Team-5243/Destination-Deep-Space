@@ -9,16 +9,16 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.TridentSubsystem;
+import frc.robot.subsystems.FlyingHatchSubsystem;
 
 public class ToggleHatchPiston extends Command {
   
-  TridentSubsystem trident;
+  FlyingHatchSubsystem trident;
 
   public ToggleHatchPiston() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    trident = Robot.m_trident;
+    trident = Robot.m_flyhatch;
     requires(trident);
   }
 

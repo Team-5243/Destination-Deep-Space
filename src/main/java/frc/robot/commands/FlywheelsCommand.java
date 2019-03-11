@@ -9,15 +9,15 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.TridentSubsystem;
+import frc.robot.subsystems.FlyingHatchSubsystem;
 
 public class FlywheelsCommand extends Command {
 
-    private TridentSubsystem flywheels;
+    private FlyingHatchSubsystem flywheels;
     private boolean intake;
 
     public FlywheelsCommand(boolean intake) {
-        flywheels = Robot.m_trident;
+        flywheels = Robot.m_flyhatch;
         requires(flywheels);
 
         this.intake = intake;
@@ -43,13 +43,15 @@ public class FlywheelsCommand extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        flywheels.stopFlywheels();
+        if(intake)  flywheels.neutralFlywheels();
+        else        flywheels.stopFlywheels();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        flywheels.stopFlywheels();
+        if(intake)  flywheels.neutralFlywheels();
+        else        flywheels.stopFlywheels();
     }
 }
