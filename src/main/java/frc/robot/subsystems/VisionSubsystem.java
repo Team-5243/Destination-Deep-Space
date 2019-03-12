@@ -20,13 +20,12 @@ public class VisionSubsystem extends Subsystem {
   
   //Includes Network Table from the Limelight Camera
 
-  private NetworkTable table; 
-
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
+  private NetworkTable table;
+  
+  public VisionSubsystem(){
     table = NetworkTableInstance.getDefault().getTable("limelight");
+
+    //Default: LED is Off and Camera is set to Driver Mode
     setLed(1);
     setCamMode(1);
   }
@@ -91,4 +90,9 @@ public class VisionSubsystem extends Subsystem {
     table.getEntry("camMode").setNumber(mode);
   }
 
+  @Override
+  public void initDefaultCommand() {
+    // Set the default command for a subsystem here.
+    // setDefaultCommand(new MySpecialCommand());
+  }
 }

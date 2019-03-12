@@ -10,8 +10,8 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class RetractAll extends Command {
-  public RetractAll() {
+public class RetractAllHatch extends Command {
+  public RetractAllHatch() {
     requires(Robot.m_flyhatch);
   }
 

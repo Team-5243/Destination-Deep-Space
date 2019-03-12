@@ -53,6 +53,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Encoder Value", m_lift.getDistance());
     SmartDashboard.putNumber("Lift Speed", m_lift.getLiftSpeed());
     SmartDashboard.putString("Hatch Solenoid Mode", m_flyhatch.getTopPiston());
+    SmartDashboard.putString("Hatch Middle Solenoid", m_flyhatch.getMiddlePiston());
     SmartDashboard.putString("Front Climb Solenoid Mode", m_climb.getFrontLeftPiston());
   }
 
@@ -113,8 +114,10 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+
+    //Ensure all pistons are retracted and limelight camera is set to driver mode with LED turns off.
     m_flyhatch.retractAll();
-    m_vision.setCamMode(1); //testing Cam sets to Driver Mode and Turn Off LED
+    m_vision.setCamMode(1);
     m_vision.setLed(1);
   }
 
@@ -125,6 +128,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
 
+    //Auto Compressor
     m_flyhatch.setClosedLoopControl(true);
   }
 

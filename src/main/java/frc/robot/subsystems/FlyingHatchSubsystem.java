@@ -27,6 +27,7 @@ public class FlyingHatchSubsystem extends Subsystem {
         leftFlywheels = new WPI_TalonSRX(RobotMap.FlyHatch.LEFT_FLYWHEELS.get());
         rightFlywheels = new WPI_TalonSRX(RobotMap.FlyHatch.RIGHT_FLYWHEELS.get());
 
+        //TODO: Test flipping the forward and reverse values
         hatchPiston = new DoubleSolenoid(RobotMap.FlyHatch.HATCH_TOP_PISTON_F.get(), RobotMap.FlyHatch.HATCH_TOP_PISTON_R.get());
         // hatchBottomPiston = new DoubleSolenoid(RobotMap.FlyHatch.HATCH_DOWN_PISTON_F.get(), RobotMap.FlyHatch.HATCH_DOWN_PISTON_R.get());
         middlePiston = new DoubleSolenoid(RobotMap.FlyHatch.MIDDLE_PISTON_F.get(), RobotMap.FlyHatch.MIDDLE_PISTON_R.get());
@@ -40,10 +41,10 @@ public class FlyingHatchSubsystem extends Subsystem {
         rightFlywheels.follow(leftFlywheels);
         leftFlywheels.setInverted(true);
 
-        hatchPiston.set(Value.kForward);
-        middlePiston.set(Value.kReverse);
+        retractAll();
     }
 
+    //Hatch Piston and Middle Piston are reversed so their values opposite
     public void retractAll() {
         hatchPiston.set(Value.kForward);
         middlePiston.set(Value.kReverse);
@@ -61,6 +62,7 @@ public class FlyingHatchSubsystem extends Subsystem {
         leftFlywheels.set(-.3d);
     }
 
+    //The pistons are supposed to move in opposite direction
     public void toggleHatchPiston() {
 		if (hatchPiston.get().equals(Value.kReverse) || hatchPiston.get().equals(Value.kOff)) {
             hatchPiston.set(Value.kForward);
@@ -75,6 +77,10 @@ public class FlyingHatchSubsystem extends Subsystem {
 
     public String getTopPiston(){
         return hatchPiston.get() == Value.kForward ? "Forward" : hatchPiston.get() == Value.kReverse ? "Reverse" : "Off";
+    }
+
+    public String getMiddlePiston(){
+        return middlePiston.get() == Value.kForward ? "Forward" : middlePiston.get() == Value.kReverse ? "Reverse" : "Off";
     }
 
     public void setClosedLoopControl(boolean on) {

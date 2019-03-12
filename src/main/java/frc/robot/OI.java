@@ -18,7 +18,7 @@ import frc.robot.commands.ChangeLedMode;
 import frc.robot.commands.FlywheelsCommand;
 import frc.robot.commands.LiftLowerCommand;
 import frc.robot.commands.LiftRaiseCommand;
-import frc.robot.commands.RetractAll;
+import frc.robot.commands.RetractAllHatch;
 import frc.robot.commands.ToggleClimbPistons;
 //import frc.robot.commands.PivotCommand;
 import frc.robot.commands.ToggleHatchPiston;
@@ -38,7 +38,7 @@ public class OI {
         /*
         Left Joystick:
             Trigger: Flywheels Intake
-            Button 4: Retract all pistons
+            Button 4: Retract All Hatch Pistons
             Button 5: Raise Lift | Button 6: Lower Lift
         
         Right Joystick:
@@ -62,7 +62,7 @@ public class OI {
         FLYWHEEL_OUTTAKE.getJoystickButton().whileHeld(new FlywheelsCommand(false));
 
         HATCH_PISTON.getJoystickButton().whenPressed(new ToggleHatchPiston());
-        RETRACT_ALL.getJoystickButton().whenPressed(new RetractAll());
+        RETRACT_ALL.getJoystickButton().whenPressed(new RetractAllHatch());
 
         VISION_ALIGN.getJoystickButton().whenPressed(new VisionAlignCommand());
 
