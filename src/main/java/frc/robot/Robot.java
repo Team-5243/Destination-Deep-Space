@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.Flywheels;
+import frc.robot.subsystems.DriveSubsystem;
 
 
 /**
@@ -25,7 +25,8 @@ import frc.robot.subsystems.Flywheels;
 public class Robot extends TimedRobot {
 
   public static OI m_oi;
-  public static Flywheels m_trident = new Flywheels();
+  public static DriveSubsystem m_drive = new DriveSubsystem();
+  //public static Flywheels m_trident = new Flywheels();
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();

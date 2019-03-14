@@ -13,19 +13,21 @@ package frc.robot;
  * the wiring easier and significantly reduces the number of magic numbers
  * floating around.
  */
-public enum RobotMap {
-	
-	leftFlywheels(3),
-	rightFlywheels(4);
+public class RobotMap {
+	public static enum Drive{
+		FRONT_RIGHT(5), 
+		FRONT_LEFT(6),
+		BACK_RIGHT(2),
+		BACK_LEFT(3);
 
-	private int port;
-	
-	private RobotMap(int port) {
-		this.port = port;
+		private int port;
+
+		private Drive(int port){
+			this.port = port;
+		}
+
+		public int get(){
+			return port;
+		}
 	}
-
-	public int get() {
-		return port;
-	}
-
 }

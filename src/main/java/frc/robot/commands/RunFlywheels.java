@@ -17,9 +17,9 @@ public class RunFlywheels extends Command {
     private boolean intake;
 
     public RunFlywheels(boolean intake) {
-        flywheels = Robot.m_trident;
-        requires(flywheels);
-        this.intake = intake;
+        // flywheels = Robot.m_trident;
+        // requires(flywheels);
+        // this.intake = intake;
     }
 
     // Called just before this Command runs the first time

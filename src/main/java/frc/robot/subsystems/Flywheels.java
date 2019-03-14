@@ -17,23 +17,23 @@ public class Flywheels extends Subsystem {
 
     //Includes Cargo and Hatch Mechanisms
 
-    private WPI_TalonSRX leftFlywheels, rightFlywheels;
+    //private WPI_TalonSRX leftFlywheels, rightFlywheels;
 
     public Flywheels() {
-        leftFlywheels = new WPI_TalonSRX(RobotMap.leftFlywheels.get());
-        rightFlywheels = new WPI_TalonSRX(RobotMap.rightFlywheels.get());
+        // leftFlywheels = new WPI_TalonSRX(RobotMap.leftFlywheels.get());
+        // rightFlywheels = new WPI_TalonSRX(RobotMap.rightFlywheels.get());
 
-        rightFlywheels.follow(leftFlywheels);
+        // rightFlywheels.follow(leftFlywheels);
 
-        leftFlywheels.setInverted(true);
+        // leftFlywheels.setInverted(true);
     }
 
     public void runFlywheels(boolean intake) {
-        leftFlywheels.set(intake ? -.5d : 1d);    
+        //leftFlywheels.set(intake ? -.5d : 1d);    
     }
 
     public void stopFlywheels(){
-        leftFlywheels.set(0);
+        //leftFlywheels.set(0);
     }
 
     @Override
